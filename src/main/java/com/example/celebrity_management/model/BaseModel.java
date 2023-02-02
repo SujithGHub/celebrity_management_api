@@ -11,11 +11,12 @@ import org.hibernate.annotations.GenericGenerator;
 @Data
 @MappedSuperclass
 public class BaseModel {
+    @Id
 
-  @Id
   @GeneratedValue(generator = "system-uuid")
   @GenericGenerator(name = "system-uuid", strategy = "uuid")
   private String id;
+
   private Date updatedDate;
   private Date createdDate;
 }
