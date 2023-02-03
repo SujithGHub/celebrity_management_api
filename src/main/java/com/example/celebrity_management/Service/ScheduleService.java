@@ -24,7 +24,8 @@ public class ScheduleService {
   public Optional<ScheduleModel> getById(String id) {
     return scheduleRepository.findById(id);
   }
-  public List<ScheduleModel> delete(String id){
+
+  public List<ScheduleModel> delete(String id) {
     scheduleRepository.deleteById(id);
     return getAll();
   }

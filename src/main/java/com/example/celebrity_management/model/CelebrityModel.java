@@ -15,4 +15,6 @@ public class CelebrityModel extends BaseModel {
   private String gender;
   private int Age;
   private String role;
+  private String password;
+
 }

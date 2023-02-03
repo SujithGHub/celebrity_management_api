@@ -21,7 +21,7 @@ public class ScheduleController {
   private ScheduleService scheduleService;
 
   @PostMapping
-  public ScheduleModel createShedule(@RequestBody ScheduleModel ScheduleModel) {
+  public ScheduleModel createSchedule(@RequestBody ScheduleModel ScheduleModel) {
     return scheduleService.create(ScheduleModel);
   }
 
@@ -34,8 +34,9 @@ public class ScheduleController {
   private Optional<ScheduleModel> getScheduleById(@PathVariable String id) {
     return scheduleService.getById(id);
   }
+
   @DeleteMapping("{id}")
-  public List<ScheduleModel> deleteScheduleById(@PathVariable String id){
-   return scheduleService.delete(id);
+  public List<ScheduleModel> deleteScheduleById(@PathVariable String id) {
+    return scheduleService.delete(id);
   }
 }

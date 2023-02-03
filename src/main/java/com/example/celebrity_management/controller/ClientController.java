@@ -26,12 +26,12 @@ public class ClientController {
   }
 
   @GetMapping("/get-all-client")
-  public List<ClientModel> getAllClientdetails() {
+  public List<ClientModel> getAllClientDetails() {
     return clientService.getAll();
   }
 
   @GetMapping("{id}")
-  public Optional<ClientModel> getAllclientById(@PathVariable("id") String id) {
+  public Optional<ClientModel> getAllClientById(@PathVariable("id") String id) {
     return clientService.getById(id);
   }
 
