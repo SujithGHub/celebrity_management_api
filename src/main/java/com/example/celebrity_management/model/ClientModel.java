@@ -1,5 +1,6 @@
 package com.example.celebrity_management.model;
 
+import java.sql.Time;
 import java.util.Date;
 
 import lombok.Data;
@@ -17,4 +18,5 @@ public class ClientModel extends BaseModel {
   private String event;
   private String mailId;
   private String phoneNumber;
+  private Date fromDate;
 }

@@ -1,4 +1,4 @@
-package com.example.celebrity_management.Aspect;
+package com.example.celebrity_management.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -21,7 +21,7 @@ public class CelebrityAspect {
 
   // JoinPoint => Point of method execution -> save() method is joinPoint
 
-  @Before(value = "execution(* com.example.celebrity_management.Repository.CelebrityRepository.save(..)) && args(baseModel)")
+  @Before(value = "execution(* com.example.celebrity_management.repository.CelebrityRepository.save(..)) && args(baseModel)")
   public void onSave(JoinPoint joinPoint, BaseModel baseModel) {
     try{
       if (StringUtils.hasText(baseModel.getId())){

@@ -1,4 +1,4 @@
-package com.example.celebrity_management.Util;
+package com.example.celebrity_management.util;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JwtAuthenticationEntrypointFilter
   implements AuthenticationEntryPoint, Serializable {
 
@@ -18,6 +20,5 @@ public class JwtAuthenticationEntrypointFilter
     AuthenticationException authException
   ) throws IOException, ServletException {
     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-
   }
 }

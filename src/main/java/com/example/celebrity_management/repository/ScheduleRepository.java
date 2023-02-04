@@ -1,4 +1,4 @@
-package com.example.celebrity_management.Repository;
+package com.example.celebrity_management.repository;
 
 import com.example.celebrity_management.model.ScheduleModel;
 import org.springframework.data.jpa.repository.JpaRepository;

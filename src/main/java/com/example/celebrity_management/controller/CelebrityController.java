@@ -1,9 +1,10 @@
 package com.example.celebrity_management.controller;
 
-import com.example.celebrity_management.Dto.LoginDto;
 import com.example.celebrity_management.Service.CelebrityService;
-import com.example.celebrity_management.Util.AuthenticationUtil;
+import com.example.celebrity_management.dto.LoginDto;
 import com.example.celebrity_management.model.CelebrityModel;
+import com.example.celebrity_management.util.AuthenticationUtil;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class CelebrityController {
   private CelebrityService celebrityService;
 
   @PostMapping
-  public CelebrityModel createCelebrity(
+  public Optional<CelebrityModel> createCelebrity(
     @RequestBody CelebrityModel celebrityModel
   ) {
     return celebrityService.create(celebrityModel);

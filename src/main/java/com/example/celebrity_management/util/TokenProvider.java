@@ -1,10 +1,12 @@
-package com.example.celebrity_management.Util;
+package com.example.celebrity_management.util;
 
 import com.example.celebrity_management.Props.JwtProps;
 import com.example.celebrity_management.model.CelebrityModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.function.Function;
@@ -13,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TokenProvider implements Serializable {
 
   @Autowired
@@ -36,11 +40,9 @@ public class TokenProvider implements Serializable {
   }
 
   private Claims getAllClaimsFromToken(String token) {
-    return Jwts
-      .parser()
-      .setSigningKey(jwtProps.getSigningKey().getBytes())
-      .parseClaimsJws(token)
-      .getBody();
+    return Jwts.parserBuilder()
+          .setSigningKey(Keys.hmacShaKeyFor(jwtProps.getSigningKey().getBytes()))
+          .build().parseClaimsJws(token).getBody();
   }
 
   public String generateToken(
@@ -64,7 +66,7 @@ public class TokenProvider implements Serializable {
           System.currentTimeMillis() + jwtProps.getTokenValidity() * 1000
         )
       )
-      .signWith(SignatureAlgorithm.HS256, jwtProps.getSigningKey().getBytes())
+      .signWith(Keys.hmacShaKeyFor(jwtProps.getSigningKey().getBytes()))
       .compact();
   }
 

@@ -1,19 +1,28 @@
 package com.example.celebrity_management.Props;
 
-import lombok.Data;
+import lombok.Getter;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@Data
+@Getter
 public class JwtProps {
 
+ 
   @Value("${jwt.token.validity}")
   private int tokenValidity;
 
-  @Value("${jwt.token.signing.Key}")
+  @Value("${jwt.signing.key}")
   private String signingKey;
 
-  @Value("${jwt.token.authorities.key}")
+  @Value("${jwt.authorities.key}")
   private String authoritiesKey;
+
+  @Value("${jwt.token.prefix}")
+  private String tokenPrefix;
+
+  @Value("${jwt.header.string}")
+  private String headerString;
 }
+

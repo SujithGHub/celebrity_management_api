@@ -1,7 +1,8 @@
 package com.example.celebrity_management.Service;
 
-import com.example.celebrity_management.Repository.ScheduleRepository;
 import com.example.celebrity_management.model.ScheduleModel;
+import com.example.celebrity_management.repository.ScheduleRepository;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;

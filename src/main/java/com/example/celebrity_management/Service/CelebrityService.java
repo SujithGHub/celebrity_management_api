@@ -1,25 +1,36 @@
 package com.example.celebrity_management.Service;
 
-import com.example.celebrity_management.Dto.LoginDto;
-import com.example.celebrity_management.Repository.CelebrityRepository;
+import com.example.celebrity_management.dto.LoginDto;
 import com.example.celebrity_management.model.CelebrityModel;
+import com.example.celebrity_management.model.ScheduleModel;
+import com.example.celebrity_management.repository.CelebrityRepository;
+import com.example.celebrity_management.repository.ScheduleRepository;
+
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
-public class CelebrityService {
+@Service("celebrityService")
+public class CelebrityService implements UserDetailsService {
 
   @Autowired
+  @Lazy
   private BCryptPasswordEncoder bCryptPasswordEncoder;
 
   @Autowired
   private CelebrityRepository celebrityRepository;
 
-  public CelebrityModel create(CelebrityModel celebrityModel) {
-    return celebrityRepository.save(celebrityModel);
+  public Optional<CelebrityModel> create(CelebrityModel celebrityModel) {
+    celebrityModel.setPassword(
+      bCryptPasswordEncoder.encode(celebrityModel.getPassword())
+    );
+    CelebrityModel cModel= celebrityRepository.save(celebrityModel);
+    return Optional.of(cModel);
   }
 
   public List<CelebrityModel> getAll() {
@@ -35,9 +46,18 @@ public class CelebrityService {
      return getAll();
   }
 
+  @Override
+
+  public  UserDetails loadUserByUsername(String mailId){
+       CelebrityModel celebrityModel = celebrityRepository
+       .findByMailId(mailId)
+       .orElse(null);
+       return (UserDetails) celebrityModel;
+  }
+
   public CelebrityModel login(LoginDto loginDto) throws Exception {
     CelebrityModel celebrityModel = celebrityRepository
-      .findById(loginDto.getMailId())
+      .findByMailId(loginDto.getMailId())
       .orElseThrow(() -> new Exception("Invalid user"));
     if (
       !bCryptPasswordEncoder.matches(
