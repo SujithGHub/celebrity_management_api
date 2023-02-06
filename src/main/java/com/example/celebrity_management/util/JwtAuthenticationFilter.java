@@ -1,11 +1,10 @@
 package com.example.celebrity_management.util;
 
 import com.example.celebrity_management.Props.JwtProps;
-import com.example.celebrity_management.Service.CelebrityService;
-import com.example.celebrity_management.repository.CelebrityRepository;
+import com.example.celebrity_management.service.UserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,11 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private AntPathMatcher pathMatcher = new AntPathMatcher();
 
   @Autowired
-  private CelebrityService celebrityService;
+  private UserService celebrityService;
 
   @Override 
   protected boolean shouldNotFilter(HttpServletRequest request)
     throws ServletException {
+    skipUrls.add("/celebrity");
     skipUrls.add("/celebrity/login");
     skipUrls.add("/celebrity/get-all-celebrity");
     return skipUrls

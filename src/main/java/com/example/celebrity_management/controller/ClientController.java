@@ -1,7 +1,7 @@
 package com.example.celebrity_management.controller;
 
-import com.example.celebrity_management.Service.ClientService;
-import com.example.celebrity_management.model.ClientModel;
+import com.example.celebrity_management.service.ClientService;
+import com.example.celebrity_management.model.Users;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +21,22 @@ public class ClientController {
   private ClientService clientService;
 
   @PostMapping
-  public ClientModel createClient(@RequestBody ClientModel clientModel) {
+  public Users createClient(@RequestBody Users clientModel) {
     return clientService.create(clientModel);
   }
 
   @GetMapping("/get-all-client")
-  public List<ClientModel> getAllClientDetails() {
+  public List<Users> getAllClientDetails() {
     return clientService.getAll();
   }
 
   @GetMapping("{id}")
-  public Optional<ClientModel> getAllClientById(@PathVariable("id") String id) {
+  public Optional<Users> getAllClientById(@PathVariable("id") String id) {
     return clientService.getById(id);
   }
 
   @DeleteMapping("{id}")
-  public List<ClientModel> deleteClient(@PathVariable("id") String id) {
+  public List<Users> deleteClient(@PathVariable("id") String id) {
     return clientService.delete(id);
   }
 }

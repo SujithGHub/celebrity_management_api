@@ -1,7 +1,7 @@
 package com.example.celebrity_management.controller;
 
-import com.example.celebrity_management.Service.ScheduleService;
-import com.example.celebrity_management.model.ScheduleModel;
+import com.example.celebrity_management.service.ScheduleService;
+import com.example.celebrity_management.model.Schedule;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +21,22 @@ public class ScheduleController {
   private ScheduleService scheduleService;
 
   @PostMapping
-  public ScheduleModel createSchedule(@RequestBody ScheduleModel ScheduleModel) {
+  public Schedule createSchedule(@RequestBody Schedule ScheduleModel) {
     return scheduleService.create(ScheduleModel);
   }
 
   @GetMapping("/get-all-schedule")
-  private List<ScheduleModel> getAllSchedule() {
+  private List<Schedule> getAllSchedule() {
     return scheduleService.getAll();
   }
 
   @GetMapping("{id}")
-  private Optional<ScheduleModel> getScheduleById(@PathVariable String id) {
+  private Optional<Schedule> getScheduleById(@PathVariable String id) {
     return scheduleService.getById(id);
   }
 
   @DeleteMapping("{id}")
-  public List<ScheduleModel> deleteScheduleById(@PathVariable String id) {
+  public List<Schedule> deleteScheduleById(@PathVariable String id) {
     return scheduleService.delete(id);
   }
 }

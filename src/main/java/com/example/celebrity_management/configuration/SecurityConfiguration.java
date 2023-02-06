@@ -1,6 +1,6 @@
 package com.example.celebrity_management.configuration;
 
-import com.example.celebrity_management.Service.CelebrityService;
+import com.example.celebrity_management.service.UserService;
 import com.example.celebrity_management.util.JwtAuthenticationFilter;
 
 import jakarta.servlet.Filter;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -26,8 +25,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration {
 
   @Autowired
-  @Qualifier("celebrityService")
-  private CelebrityService celebrityService;
+  @Qualifier("userService")
+  private UserService userService;
 
   @Bean
   SecurityFilterChain configure(HttpSecurity http) throws Exception {
@@ -68,7 +67,7 @@ public class SecurityConfiguration {
       AuthenticationManagerBuilder.class
     );
     authenticationManagerBuilder
-      .userDetailsService(celebrityService)
+      .userDetailsService(userService)
       .passwordEncoder(getBcryptPasswordEncoder());
     return authenticationManagerBuilder.build();
   }

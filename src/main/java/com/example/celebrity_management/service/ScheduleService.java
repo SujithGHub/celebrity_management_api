@@ -1,6 +1,6 @@
-package com.example.celebrity_management.Service;
+package com.example.celebrity_management.service;
 
-import com.example.celebrity_management.model.ScheduleModel;
+import com.example.celebrity_management.model.Schedule;
 import com.example.celebrity_management.repository.ScheduleRepository;
 
 import java.util.List;
@@ -14,19 +14,19 @@ public class ScheduleService {
   @Autowired
   private ScheduleRepository scheduleRepository;
 
-  public ScheduleModel create(ScheduleModel scheduleModel) {
+  public Schedule create(Schedule scheduleModel) {
     return scheduleRepository.save(scheduleModel);
   }
 
-  public List<ScheduleModel> getAll() {
+  public List<Schedule> getAll() {
     return scheduleRepository.findAll();
   }
 
-  public Optional<ScheduleModel> getById(String id) {
+  public Optional<Schedule> getById(String id) {
     return scheduleRepository.findById(id);
   }
 
-  public List<ScheduleModel> delete(String id) {
+  public List<Schedule> delete(String id) {
     scheduleRepository.deleteById(id);
     return getAll();
   }

@@ -1,14 +1,13 @@
 package com.example.celebrity_management.repository;
 
-import com.example.celebrity_management.model.CelebrityModel;
+import com.example.celebrity_management.model.Celebrity;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-@Repository
-public interface CelebrityRepository
-  extends JpaRepository<CelebrityModel, String> {
 
-    public Optional<CelebrityModel> findByMailId(String email);
+public interface CelebrityRepository
+  extends JpaRepository<Celebrity, String> {
+
+    public Optional<Celebrity> findByMailId(String email);
   }

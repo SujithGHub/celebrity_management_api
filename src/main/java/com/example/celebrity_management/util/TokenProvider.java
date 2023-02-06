@@ -1,10 +1,9 @@
 package com.example.celebrity_management.util;
 
 import com.example.celebrity_management.Props.JwtProps;
-import com.example.celebrity_management.model.CelebrityModel;
+import com.example.celebrity_management.model.Celebrity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 
 import java.io.Serializable;
@@ -73,7 +72,7 @@ public class TokenProvider implements Serializable {
   public Boolean validateToken(String token, UserDetails user) {
     final String mailId = getEmailFromToken(token);
     return (
-      mailId.equals(((CelebrityModel) user).getMailId()) &&
+      mailId.equals(((Celebrity) user).getMailId()) &&
       !isTokenExpired(token)
     );
   }

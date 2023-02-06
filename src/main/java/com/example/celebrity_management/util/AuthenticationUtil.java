@@ -1,8 +1,6 @@
 package com.example.celebrity_management.util;
 
-import com.example.celebrity_management.Service.CelebrityService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

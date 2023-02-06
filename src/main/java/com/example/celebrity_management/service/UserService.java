@@ -1,10 +1,8 @@
-package com.example.celebrity_management.Service;
+package com.example.celebrity_management.service;
 
 import com.example.celebrity_management.dto.LoginDto;
-import com.example.celebrity_management.model.CelebrityModel;
-import com.example.celebrity_management.model.ScheduleModel;
+import com.example.celebrity_management.model.Celebrity;
 import com.example.celebrity_management.repository.CelebrityRepository;
-import com.example.celebrity_management.repository.ScheduleRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service("celebrityService")
-public class CelebrityService implements UserDetailsService {
+@Service("userService")
+public class UserService implements UserDetailsService {
 
   @Autowired
   @Lazy
@@ -25,44 +23,44 @@ public class CelebrityService implements UserDetailsService {
   @Autowired
   private CelebrityRepository celebrityRepository;
 
-  public Optional<CelebrityModel> create(CelebrityModel celebrityModel) {
-    celebrityModel.setPassword(
-      bCryptPasswordEncoder.encode(celebrityModel.getPassword())
-    );
-    CelebrityModel cModel= celebrityRepository.save(celebrityModel);
+  public Optional<Celebrity> create(Celebrity celebrityModel) {
+    // celebrityModel.setPassword(
+    //   // bCryptPasswordEncoder.encode(celebrityModel.getPassword())
+    // );
+    Celebrity cModel= celebrityRepository.save(celebrityModel);
     return Optional.of(cModel);
   }
 
-  public List<CelebrityModel> getAll() {
+  public List<Celebrity> getAll() {
     return celebrityRepository.findAll();
   }
 
-  public Optional<CelebrityModel> get(String id) {
+  public Optional<Celebrity> get(String id) {
     return celebrityRepository.findById(id);
   }
 
-  public List<CelebrityModel> delete(String id){
+  public List<Celebrity> delete(String id){
     celebrityRepository.deleteById(id);
      return getAll();
   }
 
   @Override
 
-  public  UserDetails loadUserByUsername(String mailId){
-       CelebrityModel celebrityModel = celebrityRepository
+  public UserDetails loadUserByUsername(String mailId){
+       Celebrity celebrityModel = celebrityRepository
        .findByMailId(mailId)
        .orElse(null);
        return (UserDetails) celebrityModel;
   }
 
-  public CelebrityModel login(LoginDto loginDto) throws Exception {
-    CelebrityModel celebrityModel = celebrityRepository
+  public Celebrity login(LoginDto loginDto) throws Exception {
+    Celebrity celebrityModel = celebrityRepository
       .findByMailId(loginDto.getMailId())
       .orElseThrow(() -> new Exception("Invalid user"));
     if (
       !bCryptPasswordEncoder.matches(
         loginDto.getPassword(),
-        celebrityModel.getPassword()
+       " celebrityModel.getPassword()"
       )
     ) {
       throw new Exception("Invalid password");

@@ -1,22 +1,20 @@
 package com.example.celebrity_management.model;
-
-import java.sql.Time;
 import java.util.Date;
 
+import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import jakarta.persistence.Entity;
 
 @Data
 @Entity
 @EqualsAndHashCode(callSuper = false)
-public class ClientModel extends BaseModel {
+public class Celebrity extends BaseModel {
 
-  private Date date;
-  private String duration;
-  private String event;
+  private String name;
   private String mailId;
   private String phoneNumber;
-  private Date fromDate;
+  private String gender;
+  private Date dateOfBirth;
+  private String description;
+  private String address;
 }

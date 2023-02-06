@@ -1,8 +1,8 @@
 package com.example.celebrity_management.controller;
 
-import com.example.celebrity_management.Service.CelebrityService;
+import com.example.celebrity_management.service.UserService;
 import com.example.celebrity_management.dto.LoginDto;
-import com.example.celebrity_management.model.CelebrityModel;
+import com.example.celebrity_management.model.Celebrity;
 import com.example.celebrity_management.util.AuthenticationUtil;
 
 import java.util.List;
@@ -27,39 +27,35 @@ public class CelebrityController {
   private AuthenticationUtil authenticationUtil;
 
   @Autowired
-  private CelebrityService celebrityService;
+  private UserService celebrityService;
 
   @PostMapping
-  public Optional<CelebrityModel> createCelebrity(
-    @RequestBody CelebrityModel celebrityModel
-  ) {
+  public Optional<Celebrity> createCelebrity(@RequestBody Celebrity celebrityModel) {
     return celebrityService.create(celebrityModel);
   }
 
   @GetMapping(value = "/get-all-celebrity")
-  public List<CelebrityModel> getAllCelebrityDetails() {
+  public List<Celebrity> getAllCelebrityDetails() {
     return celebrityService.getAll();
   }
 
   @GetMapping(value = "/{id}")
-  public Optional<CelebrityModel> getById(@PathVariable String id) {
+  public Optional<Celebrity> getById(@PathVariable String id) {
     return celebrityService.get(id);
   }
 
   @DeleteMapping(value = "/{id}")
-  public List<CelebrityModel> deleteById(@PathVariable String id) {
+  public List<Celebrity> deleteById(@PathVariable String id) {
     return celebrityService.delete(id);
   }
 
   @PostMapping(value = "/login")
   public ResponseEntity<String> login(@RequestBody LoginDto loginDto)
-    throws Exception {
-    CelebrityModel loginUser = celebrityService.login(loginDto);
+      throws Exception {
+    Celebrity loginUser = celebrityService.login(loginDto);
     return ResponseEntity.ok(
-      authenticationUtil.authentication(
-        loginUser.getMailId(),
-        loginDto.getPassword()
-      )
-    );
+        authenticationUtil.authentication(
+            loginUser.getMailId(),
+            loginDto.getPassword()));
   }
 }
