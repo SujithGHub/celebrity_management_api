@@ -16,7 +16,6 @@ public class BaseModel {
   @GeneratedValue(generator = "system-uuid")
   @GenericGenerator(name = "system-uuid", strategy = "uuid")
   private String id;
-
   private Date updatedDate;
   private Date createdDate;
 }

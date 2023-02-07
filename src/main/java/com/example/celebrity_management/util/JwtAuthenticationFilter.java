@@ -1,6 +1,6 @@
 package com.example.celebrity_management.util;
 
-import com.example.celebrity_management.Props.JwtProps;
+import com.example.celebrity_management.props.JwtProps;
 import com.example.celebrity_management.service.UserService;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -37,39 +37,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private AntPathMatcher pathMatcher = new AntPathMatcher();
 
   @Autowired
-  private UserService celebrityService;
+  private UserService userService;
 
-  @Override 
+  @Override
   protected boolean shouldNotFilter(HttpServletRequest request)
-    throws ServletException {
+      throws ServletException {
+    skipUrls.add("/user");
+    skipUrls.add("/user/login");
+    skipUrls.add("/user/get-all");
     skipUrls.add("/celebrity");
-    skipUrls.add("/celebrity/login");
-    skipUrls.add("/celebrity/get-all-celebrity");
+    // skipUrls.add("/celebrity/get-all-celebrity");
+    skipUrls.add("/celebrity/{id}");
     return skipUrls
-      .stream()
-      .anyMatch(p -> pathMatcher.match(p, request.getServletPath()));
+        .stream()
+        .anyMatch(p -> pathMatcher.match(p, request.getServletPath()));
   }
 
   @Override
-  protected void doFilterInternal(
-    HttpServletRequest request,
-    HttpServletResponse response,
-    FilterChain filterChain
-  ) throws ServletException, IOException {
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
     String header = request.getHeader("Authorization");
     String mailId = null;
     String authToken = null;
-
     authToken = header.replace(jwtProps.getTokenPrefix(), "");
-
     try {
       mailId = jwtTokenUtil.getEmailFromToken(authToken);
     } catch (IllegalArgumentException e) {
       logger.error("An error occurred while fetching Username from Token", e);
       try {
         throw new Exception(
-          "An error occurred while fetching Username from Token"
-        );
+            "An error occurred while fetching Username from Token");
       } catch (Exception e1) {
         e1.printStackTrace();
       }
@@ -84,27 +81,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       logger.error("Authentication Failed. Username or Password not valid.");
       try {
         throw new Exception(
-          "Authentication Failed. Username or Password not valid."
-        );
+            "Authentication Failed. Username or Password not valid.");
       } catch (Exception e1) {
         e1.printStackTrace();
       }
     }
 
-    UserDetails userDetails = celebrityService.loadUserByUsername(mailId);
+    UserDetails userDetails = userService.loadUserByUsername(mailId);
 
     if (jwtTokenUtil.validateToken(authToken, userDetails)) {
       UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-        userDetails,
-        null,
-        userDetails.getAuthorities()
-      );
+          userDetails,
+          null,
+          userDetails.getAuthorities());
       authentication.setDetails(
-        new WebAuthenticationDetailsSource().buildDetails(request)
-      );
+          new WebAuthenticationDetailsSource().buildDetails(request));
       logger.info(
-        "authenticated user " + mailId + ", setting security context"
-      );
+          "authenticated user " + mailId + ", setting security context");
       SecurityContextHolder.getContext().setAuthentication(authentication);
       filterChain.doFilter(request, response);
     } else {

@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 
 
 @Data
@@ -22,6 +23,8 @@ public class Users extends BaseModel implements UserDetails {
   private boolean locked;
   private boolean credentialsExpired;
   private Boolean isActive;
+  @Transient
+  private String roleId;
   @OneToOne
   private Role role;
 

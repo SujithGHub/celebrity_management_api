@@ -13,12 +13,9 @@ public class AuthenticationUtil {
   @Autowired
   private AuthenticationManager authenticationManager;
 
-  
-
   @Autowired
   private TokenProvider tokenProvider;
 
- 
 
   public void AuthenticationManager(
     AuthenticationManager authenticationManager,
@@ -34,7 +31,6 @@ public class AuthenticationUtil {
         new UsernamePasswordAuthenticationToken(mailId, password)
       );
       SecurityContextHolder.getContext().setAuthentication(authentication);
-      // String id = employeeService.loadUserByUsername(empName).getUsername();
       return tokenProvider.generateToken(authentication, mailId, password);
     } catch (Exception e) {
       e.printStackTrace();

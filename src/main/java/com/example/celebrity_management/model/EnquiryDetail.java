@@ -13,6 +13,7 @@ public class EnquiryDetail extends BaseModel {
   private String name;
   private String email;
   private String mobile;
+  private String eventName;
   private Date startTime;
   private Date endTime;
 

@@ -1,7 +1,8 @@
 package com.example.celebrity_management.util;
 
-import com.example.celebrity_management.Props.JwtProps;
-import com.example.celebrity_management.model.Celebrity;
+import com.example.celebrity_management.model.Users;
+import com.example.celebrity_management.props.JwtProps;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -72,7 +73,7 @@ public class TokenProvider implements Serializable {
   public Boolean validateToken(String token, UserDetails user) {
     final String mailId = getEmailFromToken(token);
     return (
-      mailId.equals(((Celebrity) user).getMailId()) &&
+      mailId.equals(((Users) user).getMailId()) &&
       !isTokenExpired(token)
     );
   }

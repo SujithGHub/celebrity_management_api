@@ -1,4 +1,4 @@
-package com.example.celebrity_management.Props;
+package com.example.celebrity_management.props;
 
 import lombok.Getter;
 
@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 @Getter
 public class JwtProps {
 
- 
   @Value("${jwt.token.validity}")
   private int tokenValidity;
 
