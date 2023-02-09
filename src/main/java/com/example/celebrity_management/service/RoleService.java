@@ -18,7 +18,7 @@ public class RoleService {
     return roleRepository.save(role);
   }
 
-  public List<Role> name(String name){
+  public Role name(String name){
     return roleRepository.findByName(name);
   }
   public Optional<Role> delete(String name){

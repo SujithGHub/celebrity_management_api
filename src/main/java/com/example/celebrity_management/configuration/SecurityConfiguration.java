@@ -2,7 +2,6 @@ package com.example.celebrity_management.configuration;
 
 import com.example.celebrity_management.service.UserService;
 import com.example.celebrity_management.util.JwtAuthenticationFilter;
-
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -72,12 +71,13 @@ public class SecurityConfiguration {
     return authenticationManagerBuilder.build();
   }
 
-    @Bean
-    PasswordEncoder getBcryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-   @Bean
-   Filter authenticationJwtTokenFilter() {
+  @Bean
+  PasswordEncoder getBcryptPasswordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  Filter authenticationJwtTokenFilter() {
     return new JwtAuthenticationFilter();
   }
 }
