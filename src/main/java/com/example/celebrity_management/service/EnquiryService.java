@@ -1,5 +1,4 @@
 package com.example.celebrity_management.service;
-
 import com.example.celebrity_management.model.EnquiryDetail;
 import com.example.celebrity_management.repository.EnquiryRepository;
 import java.util.List;
@@ -28,5 +27,9 @@ public class EnquiryService {
   public List<EnquiryDetail> delete(String id) {
     enquiryRepository.deleteById(id);
     return getAll();
+  }
+
+  public List<EnquiryDetail> getAllEvents(String id){
+    return enquiryRepository.findByCelebrityId(id);
   }
 }

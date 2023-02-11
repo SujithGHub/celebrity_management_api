@@ -21,7 +21,7 @@ public class CelebrityAspect {
 
   // JoinPoint => Point of method execution -> save() method is joinPoint
 
-  @Before(value = "execution(* com.example.celebrity_management.repository.CelebrityRepository.save(..)) && args(baseModel)")
+  @Before(value = "execution(* com.example.celebrity_management.repository.*.save*(..)) && args(baseModel)")
   public void onSave(JoinPoint joinPoint, BaseModel baseModel) {
     try{
       if (StringUtils.hasText(baseModel.getId())){

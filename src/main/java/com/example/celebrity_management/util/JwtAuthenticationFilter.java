@@ -43,11 +43,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected boolean shouldNotFilter(HttpServletRequest request)
       throws ServletException {
     skipUrls.add("/user");
+    skipUrls.add("/role/{id}");
     skipUrls.add("/user/login");
     skipUrls.add("/user/get-all");
     skipUrls.add("/celebrity");
-    // skipUrls.add("/celebrity/get-all-celebrity");
+    skipUrls.add("/enquiry");
+    skipUrls.add("/celebrity/get-all-celebrity");
     skipUrls.add("/celebrity/{id}");
+    skipUrls.add("/celebrity/get-by-adminId/{id}");
+    skipUrls.add("/enquiry/getByCelebrityId/{id}");
     return skipUrls
         .stream()
         .anyMatch(p -> pathMatcher.match(p, request.getServletPath()));

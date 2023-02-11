@@ -41,4 +41,9 @@ public class EnquiryController {
   public List<EnquiryDetail> deleteEnquiry(@PathVariable("id") String id) {
     return enquiryService.delete(id);
   }
+
+  @GetMapping("/getByCelebrityId/{id}")
+  public List<EnquiryDetail> getAllEventsById(@PathVariable("id") String id) {
+    return enquiryService.getAllEvents(id);
+  }
 }

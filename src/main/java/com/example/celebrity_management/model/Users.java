@@ -1,7 +1,7 @@
 package com.example.celebrity_management.model;
+
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Transient;
-
 
 @Data
 @Entity
@@ -25,8 +24,10 @@ public class Users extends BaseModel implements UserDetails {
   private Boolean isActive;
   @Transient
   private String roleId;
+
   @OneToOne
   private Role role;
+ 
 
   
   @Override

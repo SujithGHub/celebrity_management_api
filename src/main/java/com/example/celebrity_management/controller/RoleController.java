@@ -3,8 +3,6 @@ package com.example.celebrity_management.controller;
 import com.example.celebrity_management.model.Role;
 import com.example.celebrity_management.service.RoleService;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,21 +19,21 @@ import java.util.Optional;
 public class RoleController {
 
   @Autowired
-  private RoleService RoleService;
+  private RoleService roleService;
 
   @PostMapping
   private Role createRole(@RequestBody Role role) {
-    return RoleService. create(role);
+    return roleService.create(role);
   }
 
-  @GetMapping(value="/get-name")
-  public List<Role> getRoleName(@RequestParam ("name")String name) {
-      return RoleService.name(name);
+  @GetMapping(value="/{id}")
+  public Optional<Role> getRoleName(@PathVariable ("id")String id) {
+      return roleService.name(id);
   }
 
   @DeleteMapping(value="/{delete-name}")
   public Optional<Role> deleteRole(@PathVariable("name") String name){
-    return RoleService.delete(name);
+    return roleService.delete(name);
   }
   
 }

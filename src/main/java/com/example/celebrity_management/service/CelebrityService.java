@@ -27,8 +27,12 @@ public class CelebrityService {
     return celebrityRepository.findById(id);
   }
 
+  public List<Celebrity> getByAdminId(String Id){
+    return celebrityRepository.findByUsersId(Id);
+  }
+  
   public List<Celebrity> delete(String id) {
     celebrityRepository.deleteById(id);;
     return getAll();
-  } 
+  }
 }

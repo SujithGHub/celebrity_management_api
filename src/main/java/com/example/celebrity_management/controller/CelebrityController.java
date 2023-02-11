@@ -2,6 +2,7 @@ package com.example.celebrity_management.controller;
 
 import com.example.celebrity_management.service.CelebrityService;
 import com.example.celebrity_management.model.Celebrity;
+import com.example.celebrity_management.model.EnquiryDetail;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +38,10 @@ public class CelebrityController {
   public Optional<Celebrity> getById(@PathVariable String id) {
     return celebrityService.get(id);
   }
-
+  @GetMapping(value="/get-by-adminId/{id}")
+  public List<Celebrity> getByAdminId(@PathVariable String id){
+   return celebrityService.getByAdminId(id);
+  }
   @DeleteMapping(value = "/{id}")
   public List<Celebrity> deleteById(@PathVariable String id) {
     return celebrityService.delete(id);
