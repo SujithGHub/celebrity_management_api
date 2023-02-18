@@ -48,10 +48,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     skipUrls.add("/user/get-all");
     skipUrls.add("/celebrity");
     skipUrls.add("/enquiry");
+    skipUrls.add("/enquiry/get");
     skipUrls.add("/celebrity/get-all-celebrity");
     skipUrls.add("/celebrity/{id}");
+    skipUrls.add("/role");
     skipUrls.add("/celebrity/get-by-adminId/{id}");
     skipUrls.add("/enquiry/getByCelebrityId/{id}");
+    skipUrls.add("/status");
+    skipUrls.add("/block-date");
+
     return skipUrls
         .stream()
         .anyMatch(p -> pathMatcher.match(p, request.getServletPath()));

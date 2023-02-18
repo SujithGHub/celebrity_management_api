@@ -27,9 +27,7 @@ public class Users extends BaseModel implements UserDetails {
 
   @OneToOne
   private Role role;
- 
 
-  
   @Override
   public List<GrantedAuthority> getAuthorities() {
     List<GrantedAuthority> authorities = new ArrayList<>();
@@ -60,5 +58,5 @@ public class Users extends BaseModel implements UserDetails {
   @Override
   public boolean isEnabled() {
     return isActive;
-  } 
+  }
 }

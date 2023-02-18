@@ -1,6 +1,7 @@
 package com.example.celebrity_management.controller;
 
 import com.example.celebrity_management.model.EnquiryDetail;
+import com.example.celebrity_management.model.Schedule;
 import com.example.celebrity_management.service.EnquiryService;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,11 @@ public class EnquiryController {
     return enquiryService.create(enquiryDetail);
   }
 
+  @PostMapping(value = "/status")
+  public EnquiryDetail Status(@RequestBody Schedule schedule) {
+    return enquiryService.statusChange(schedule);
+  }
+
   @GetMapping("/get-all-enquiry")
   public List<EnquiryDetail> getAllEnquiryDetails() {
     return enquiryService.getAll();
@@ -32,8 +38,7 @@ public class EnquiryController {
 
   @GetMapping("{id}")
   public Optional<EnquiryDetail> getAllEnquiryById(
-    @PathVariable("id") String id
-  ) {
+      @PathVariable("id") String id) {
     return enquiryService.getById(id);
   }
 

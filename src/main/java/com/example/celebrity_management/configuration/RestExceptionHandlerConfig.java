@@ -31,68 +31,59 @@ public class RestExceptionHandlerConfig extends ResponseEntityExceptionHandler {
   @ExceptionHandler({ AlreadyExistException.class })
   @ResponseStatus(HttpStatus.CONFLICT)
   public ResponseEntity<ErrorResponseView> handleException(
-    final AlreadyExistException ex
-  ) {
+      final AlreadyExistException ex) {
     log.error(ex.getMessage(), ex);
     return new ResponseEntity<>(
-      new ErrorResponseView(ex.getMessage()),
-      HttpStatus.CONFLICT
-    );
+        new ErrorResponseView(ex.getMessage()),
+        HttpStatus.CONFLICT);
   }
 
   // @Override
-  // protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-  //         HttpHeaders headers, HttpStatus status, WebRequest request) {
-  //    final ValidationError error = fromBindingErrors(ex.getBindingResult());
-  //     return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+  // protected ResponseEntity<Object>
+  // handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+  // HttpHeaders headers, HttpStatus status, WebRequest request) {
+  // final ValidationError error = fromBindingErrors(ex.getBindingResult());
+  // return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
   // }
 
   @ExceptionHandler({ ResourceNotFoundException.class })
   @ResponseStatus(HttpStatus.NOT_FOUND)
   public ResponseEntity<ErrorResponseView> handleException(
-    final ResourceNotFoundException ex
-  ) {
+      final ResourceNotFoundException ex) {
     log.error(ex.getMessage(), ex);
     return new ResponseEntity<>(
-      new ErrorResponseView(ex.getMessage()),
-      HttpStatus.NOT_FOUND
-    );
+        new ErrorResponseView(ex.getMessage()),
+        HttpStatus.NOT_FOUND);
   }
 
   @ExceptionHandler({ UnauthorizedException.class })
   @ResponseStatus(HttpStatus.UNAUTHORIZED)
   public ResponseEntity<ErrorResponseView> handleException(
-    final UnauthorizedException ex
-  ) {
+      final UnauthorizedException ex) {
     log.error(ex.getMessage(), ex);
     return new ResponseEntity<>(
-      new ErrorResponseView(ex.getMessage()),
-      HttpStatus.UNAUTHORIZED
-    );
+        new ErrorResponseView(ex.getMessage()),
+        HttpStatus.UNAUTHORIZED);
   }
 
   @ExceptionHandler({ InvalidDataException.class })
   @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
   public ResponseEntity<ErrorResponseView> handleException(
-    final InvalidDataException ex
-  ) {
+      final InvalidDataException ex) {
     log.error(ex.getMessage(), ex);
     return new ResponseEntity<>(
-      new ErrorResponseView(ex.getMessage()),
-      HttpStatus.UNPROCESSABLE_ENTITY
-    );
+        new ErrorResponseView(ex.getMessage()),
+        HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
   @ExceptionHandler({ ForbiddenDataException.class })
   @ResponseStatus(HttpStatus.FORBIDDEN)
   public ResponseEntity<ErrorResponseView> handleException(
-    final ForbiddenDataException ex
-  ) {
+      final ForbiddenDataException ex) {
     log.error(ex.getMessage(), ex);
     return new ResponseEntity<>(
-      new ErrorResponseView(ex.getMessage()),
-      HttpStatus.FORBIDDEN
-    );
+        new ErrorResponseView(ex.getMessage()),
+        HttpStatus.FORBIDDEN);
   }
 
   @ExceptionHandler({ Exception.class })
@@ -100,41 +91,43 @@ public class RestExceptionHandlerConfig extends ResponseEntityExceptionHandler {
   public ResponseEntity<ErrorResponseView> handleException(final Exception ex) {
     log.error(ex.getMessage(), ex);
     return new ResponseEntity<>(
-      new ErrorResponseView(getResponseMessage(ex)),
-      HttpStatus.INTERNAL_SERVER_ERROR
-    );
+        new ErrorResponseView(getResponseMessage(ex)),
+        HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   // @ExceptionHandler({ AddressException.class })
   // @ResponseStatus(HttpStatus.CONFLICT)
-  // public ResponseEntity<ErrorResponseView> handleException(final AddressException ex) {
-  //     log.error(ex.getMessage(), ex);
-  //     return new ResponseEntity<>(new ErrorResponseView("Error Ocurred while sending mail"), HttpStatus.CONFLICT);
+  // public ResponseEntity<ErrorResponseView> handleException(final
+  // AddressException ex) {
+  // log.error(ex.getMessage(), ex);
+  // return new ResponseEntity<>(new ErrorResponseView("Error Ocurred while
+  // sending mail"), HttpStatus.CONFLICT);
   // }
 
   // @ExceptionHandler({ MessagingException.class })
   // @ResponseStatus(HttpStatus.CONFLICT)
-  // public ResponseEntity<ErrorResponseView> handleException(final MessagingException ex) {
-  //     log.error(ex.getMessage(), ex);
-  //     return new ResponseEntity<>(new ErrorResponseView("Error Ocurred while sending mail"), HttpStatus.CONFLICT);
+  // public ResponseEntity<ErrorResponseView> handleException(final
+  // MessagingException ex) {
+  // log.error(ex.getMessage(), ex);
+  // return new ResponseEntity<>(new ErrorResponseView("Error Ocurred while
+  // sending mail"), HttpStatus.CONFLICT);
   // }
 
   @ExceptionHandler({ DataIntegrityViolationException.class })
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public ResponseEntity<ErrorResponseView> handleException(
-    final DataIntegrityViolationException ex
-  ) {
-    log.error(ex.getMessage(), ex);
+      final DataIntegrityViolationException ex) {
+    log.error(ex.getMostSpecificCause().getLocalizedMessage(), ex);
+    String[] message = ex.getMostSpecificCause().getLocalizedMessage().split("Detail:");
+    String response = message[1].split("=")[1];
     return new ResponseEntity<>(
-      new ErrorResponseView("Phone Already Exists"),
-      HttpStatus.BAD_REQUEST
-    );
+        new ErrorResponseView(response),
+        HttpStatus.BAD_REQUEST);
   }
 
   public static ValidationError fromBindingErrors(final Errors errors) {
     final ValidationError error = new ValidationError(
-      "Validation failed. " + errors.getErrorCount() + " error(s)"
-    );
+        "Validation failed. " + errors.getErrorCount() + " error(s)");
     for (final ObjectError objectError : errors.getAllErrors()) {
       error.addValidationError(objectError.getDefaultMessage());
     }
