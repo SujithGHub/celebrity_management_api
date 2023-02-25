@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.celebrity_management.Exception.ResourceNotFoundException;
 import com.example.celebrity_management.model.Schedule;
-import com.example.celebrity_management.repository.EnquiryRepository;
 import com.example.celebrity_management.repository.ScheduleRepository;
 import com.example.celebrity_management.util.Types;
 
@@ -17,9 +16,6 @@ public class ScheduleService {
 
   @Autowired
   private ScheduleRepository scheduleRepository;
-
-  @Autowired
-  private EnquiryRepository enquiryRepository;
 
   public Schedule create(Schedule scheduleModel) {
     // enquiryRepository.deleteById(scheduleModel.getEnquiryId());
@@ -37,6 +33,10 @@ public class ScheduleService {
   public List<Schedule> delete(String id) {
     scheduleRepository.deleteById(id);
     return getAll();
+  }
+
+  public String deleteByCelebrityId(String id){
+    return scheduleRepository.deleteAllByCelebrityId(id);
   }
 
   public List<Schedule> getByCelebrityId(String id) {

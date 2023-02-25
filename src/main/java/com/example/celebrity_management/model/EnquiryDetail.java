@@ -6,8 +6,8 @@ import java.util.Date;
 
 import com.example.celebrity_management.util.Types;
 
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
 
 @Data
@@ -25,7 +25,7 @@ public class EnquiryDetail extends BaseModel {
   private Date endTime;
   private Types.EventStatus status = Types.EventStatus.PENDING;
 
-  @OneToOne
+  @ManyToOne
   private Celebrity celebrity;
 
 }

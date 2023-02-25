@@ -10,4 +10,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String> {
 
   List<Schedule> findByCelebrityId(String id);
 
+  String deleteAllByCelebrityId(String id);
+
 }

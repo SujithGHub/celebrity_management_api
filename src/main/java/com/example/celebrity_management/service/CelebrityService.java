@@ -7,11 +7,17 @@ import org.springframework.stereotype.Service;
 import com.example.celebrity_management.model.Celebrity;
 import com.example.celebrity_management.repository.CelebrityRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class CelebrityService {
 
   @Autowired
   private CelebrityRepository celebrityRepository;
+
+  @Autowired
+  private ScheduleService scheduleService;
 
   public Celebrity create(Celebrity celebrity) {
 
@@ -36,8 +42,8 @@ public class CelebrityService {
   }
 
   public List<Celebrity> delete(String id) {
+    scheduleService.deleteByCelebrityId(id);
     celebrityRepository.deleteById(id);
-    ;
     return getAll();
   }
 }

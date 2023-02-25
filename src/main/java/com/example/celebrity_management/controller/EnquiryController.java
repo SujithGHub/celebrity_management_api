@@ -2,6 +2,7 @@ package com.example.celebrity_management.controller;
 
 import com.example.celebrity_management.model.EnquiryDetail;
 import com.example.celebrity_management.model.Schedule;
+import com.example.celebrity_management.props.SuccessResponse;
 import com.example.celebrity_management.service.EnquiryService;
 import java.util.List;
 import java.util.Optional;
@@ -22,8 +23,8 @@ public class EnquiryController {
   private EnquiryService enquiryService;
 
   @PostMapping
-  public EnquiryDetail CreateEnquiry(@RequestBody EnquiryDetail enquiryDetail) {
-    return enquiryService.create(enquiryDetail);
+  public SuccessResponse CreateEnquiry(@RequestBody EnquiryDetail enquiryDetail) {
+    return new SuccessResponse("Enquiry Submitted", enquiryService.create(enquiryDetail));
   }
 
   @PostMapping(value = "/status")
