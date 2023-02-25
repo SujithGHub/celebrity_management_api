@@ -36,8 +36,7 @@ public class UserService implements UserDetailsService {
   public Users create(Users user) {
     user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
     user.setRole(roleRepository.findById(user.getRoleId()).orElse(null));
-    Users cModel = userRepository.save(user);
-    return cModel;
+    return userRepository.save(user);
   }
 
   public List<Users> getAll() {
