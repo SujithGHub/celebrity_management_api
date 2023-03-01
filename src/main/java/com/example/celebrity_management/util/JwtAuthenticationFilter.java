@@ -1,14 +1,5 @@
 package com.example.celebrity_management.util;
 
-import com.example.celebrity_management.props.JwtProps;
-import com.example.celebrity_management.service.UserService;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.security.SignatureException;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,6 +13,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.example.celebrity_management.props.JwtProps;
+import com.example.celebrity_management.service.UserService;
+
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -56,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     skipUrls.add("/enquiry/getByCelebrityId/{id}");
     skipUrls.add("/status");
     skipUrls.add("/block-date");
+    skipUrls.add("/schedule/status");
 
     return skipUrls
         .stream()

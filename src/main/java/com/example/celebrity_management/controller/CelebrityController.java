@@ -1,7 +1,6 @@
 package com.example.celebrity_management.controller;
 
-import com.example.celebrity_management.service.CelebrityService;
-import com.example.celebrity_management.model.Celebrity;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +9,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import com.example.celebrity_management.model.Celebrity;
+import com.example.celebrity_management.service.CelebrityService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @CrossOrigin(value = "*")
@@ -21,14 +24,16 @@ public class CelebrityController {
 
   @Autowired
   private CelebrityService celebrityService;
+  @Autowired 
+  private ObjectMapper objectMapper;
 
   @PostMapping
-  public Celebrity createCelebrity(@RequestBody Celebrity celebrity) {
-    return celebrityService.create(celebrity);
+  public Celebrity createCelebrity(@RequestPart("celebrity") String celebrity,MultipartFile file ) throws IOException{
+    return celebrityService.create(objectMapper.readValue(celebrity, Celebrity.class),file);
   }
 
   @GetMapping(value = "/get-all-celebrity")
-  public List<Celebrity> getAllCelebrityDetails() {
+  public List<Celebrity> getAllCelebrityDetails() throws IOException{
     return celebrityService.getAll();
   }
 
@@ -43,7 +48,7 @@ public class CelebrityController {
   }
 
   @DeleteMapping(value = "/{id}")
-  public List<Celebrity> deleteById(@PathVariable String id) {
+  public List<Celebrity> deleteById(@PathVariable String id) throws IOException {
     return celebrityService.delete(id);
   }
 }

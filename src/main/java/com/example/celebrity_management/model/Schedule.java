@@ -1,15 +1,15 @@
 package com.example.celebrity_management.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Transient;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import java.util.Date;
 
 import com.example.celebrity_management.util.Types;
+import com.example.celebrity_management.util.Types.Availability;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
@@ -21,7 +21,7 @@ public class Schedule extends BaseModel {
   private String eventName;
 
   private Types.EventStatus status;
-  private String availability;
+  private Types.Availability availability=Availability.AVAILABLE;
 
   @Transient
   private String enquiryId;

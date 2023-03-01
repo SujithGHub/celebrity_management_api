@@ -5,8 +5,12 @@ import org.springframework.stereotype.Service;
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.model.BlockDates;
 import com.example.celebrity_management.repository.BlockDatesRepo;
+import jakarta.transaction.Transactional;
 import java.util.*;
+
 @Service
+
+@Transactional
 public class BlockDatesService {
 
   @Autowired

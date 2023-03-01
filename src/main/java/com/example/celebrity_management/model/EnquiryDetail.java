@@ -1,11 +1,10 @@
 package com.example.celebrity_management.model;
 
 import lombok.Data;
-
 import java.util.Date;
-
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import com.example.celebrity_management.util.Types;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.EqualsAndHashCode;
@@ -26,6 +25,7 @@ public class EnquiryDetail extends BaseModel {
   private Types.EventStatus status = Types.EventStatus.PENDING;
 
   @ManyToOne
+  @OnDelete(action = OnDeleteAction.CASCADE)
   private Celebrity celebrity;
 
 }

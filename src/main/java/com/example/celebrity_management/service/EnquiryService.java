@@ -3,6 +3,7 @@ package com.example.celebrity_management.service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +16,14 @@ import com.example.celebrity_management.model.EnquiryDetail;
 import com.example.celebrity_management.model.Schedule;
 import com.example.celebrity_management.repository.BlockDatesRepo;
 import com.example.celebrity_management.repository.EnquiryRepository;
+import com.example.celebrity_management.util.Types;
+import jakarta.transaction.Transactional;
+
 import java.util.Locale;
 
 @Service
+
+@Transactional
 public class EnquiryService {
 
   @Autowired
@@ -30,53 +36,49 @@ public class EnquiryService {
   private BlockDatesRepo blockDatesRepo;
 
   public EnquiryDetail create(EnquiryDetail enquiryDetail) throws InvalidDataException {
-    int count = 0;
+
+
+Calendar calendar = Calendar.getInstance();
+calendar.setTime(enquiryDetail.getStartTime());
+calendar.add(Calendar.HOUR_OF_DAY, 1);
+Date newDate = calendar.getTime();
+
+if(newDate.after(enquiryDetail.getEndTime())){
+  throw new InvalidDataException("atleast select 1 hour");
+}
+
+
     if (enquiryDetail.getCelebrity() != null) {
       String inputDateStr = String.valueOf(enquiryDetail.getEndTime());
       DateFormat inputDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
+
       try {
         Date inputDate = inputDateFormat.parse(inputDateStr);
-
         DateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String outputDateStr = outputDateFormat.format(inputDate);
 
-        BlockDates blockedDate = blockDatesRepo.findByCelebrityIdAndDate(enquiryDetail.getCelebrity().getId(),
-            outputDateStr);
+        BlockDates blockedDate = blockDatesRepo.findByCelebrityIdAndDate(enquiryDetail.getCelebrity().getId(),outputDateStr);
 
         if (blockedDate == null) {
-          List<EnquiryDetail> enq = enquiryRepository.findByCelebrityId(enquiryDetail.getCelebrity().getId() );
-          for (EnquiryDetail e : enq) {
-            if (!(enquiryDetail.getStartTime().before(e.getStartTime())
-                && enquiryDetail.getEndTime().before(e.getEndTime())
-                ||
-                enquiryDetail.getStartTime().after(e.getStartTime())
-                    && enquiryDetail.getEndTime().after(e.getEndTime()))) {
-              count++;
-            }
-          }
+          return enquiryRepository.save(enquiryDetail);
         } else {
-          count++;
-          throw new InvalidDataException("Booking is blocked on this Date");
+          throw new InvalidDataException("celebrity not available on this particular Date");
         }
       } catch (ParseException e) {
         System.out.println("Error parsing date: " + e.getMessage());
       }
-      if (count == 0) {
-        return enquiryRepository.save(enquiryDetail);
-      } else {
-        throw new InvalidDataException("choose another date");
-      }
-    } else {
-      return enquiryRepository.save(enquiryDetail);
     }
+    return enquiryRepository.save(enquiryDetail);
+
   }
 
   public EnquiryDetail statusChange(Schedule schedule) {
+    if(schedule.getStatus()==Types.EventStatus.ACCEPTED){
+      scheduleService.create(schedule);
+    }
+  
     EnquiryDetail enquiryDetail = enquiryRepository.findById(schedule.getEnquiryId()).orElse(null);
-
     enquiryDetail.setStatus(schedule.getStatus());
-
-    scheduleService.create(schedule);
     return enquiryRepository.save(enquiryDetail);
   }
 

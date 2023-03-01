@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -32,6 +33,9 @@ public class Celebrity extends BaseModel {
   private String profession;
   private String description;
   private String address;
+  private String image;
+  @Transient
+  private String base64Image;
 
   @ManyToOne
   @OnDelete(action = OnDeleteAction.CASCADE)

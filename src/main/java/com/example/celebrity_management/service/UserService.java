@@ -1,19 +1,21 @@
 package com.example.celebrity_management.service;
 
-import com.example.celebrity_management.dto.LoginDto;
-import com.example.celebrity_management.model.Users;
-import com.example.celebrity_management.repository.UserRepository;
-import com.example.celebrity_management.repository.RoleRepository;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.Exception.ResourceNotFoundException;
+import com.example.celebrity_management.dto.LoginDto;
+import com.example.celebrity_management.model.Users;
+import com.example.celebrity_management.repository.RoleRepository;
+import com.example.celebrity_management.repository.UserRepository;
 import com.example.celebrity_management.util.AuthenticationUtil;
 
 @Service("userService")
@@ -68,6 +70,7 @@ public class UserService implements UserDetailsService {
       throw new InvalidDataException("Invalid password");
     } else {
       return authenticationUtil.authentication(user.getMailId(), loginDto.getPassword());
+
     }
   }
 }

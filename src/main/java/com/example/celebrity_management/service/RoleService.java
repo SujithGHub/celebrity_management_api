@@ -6,8 +6,11 @@ import com.example.celebrity_management.repository.RoleRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 @Service
+
+@Transactional
 public class RoleService {
 
   @Autowired
@@ -17,11 +20,12 @@ public class RoleService {
     return roleRepository.save(role);
   }
 
-  public Optional<Role> name(String id){
+  public Optional<Role> name(String id) {
     return roleRepository.findById(id);
   }
-  public Optional<Role> delete(String name){
+
+  public Optional<Role> delete(String name) {
     return roleRepository.deleteByName(name);
-     
+
   }
 }

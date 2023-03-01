@@ -33,8 +33,8 @@ public class EnquiryController {
   }
 
   @GetMapping("/get-all-enquiry")
-  public List<EnquiryDetail> getAllEnquiryDetails() {
-    return enquiryService.getAll();
+  public SuccessResponse getAllEnquiryDetails() {
+    return new SuccessResponse("", enquiryService.getAll());
   }
 
   @GetMapping("{id}")
