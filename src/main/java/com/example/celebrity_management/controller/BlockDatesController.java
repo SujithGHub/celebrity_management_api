@@ -35,7 +35,7 @@ public class BlockDatesController {
 return blockDatesService.getByCelebrityId(id);
   }
 
-  @DeleteMapping("/delete-by-id")
+  @DeleteMapping("/delete-by-id/{id}")
   public SuccessResponse deleteById(@PathVariable("id") String id){
     return new SuccessResponse(blockDatesService.deleteById(id));
   } 

@@ -79,6 +79,12 @@ if(newDate.after(enquiryDetail.getEndTime())){
   
     EnquiryDetail enquiryDetail = enquiryRepository.findById(schedule.getEnquiryId()).orElse(null);
     enquiryDetail.setStatus(schedule.getStatus());
+    enquiryDetail.setCelebrity(schedule.getCelebrity());
+    enquiryDetail.setStartTime(schedule.getStartTime());
+    enquiryDetail.setEndTime(schedule.getEndTime());
+    enquiryDetail.setEventName(schedule.getEventName());
+
+    
     return enquiryRepository.save(enquiryDetail);
   }
 

@@ -32,7 +32,7 @@ public class ScheduleService {
       }
     }
     if (count == 0) {
-      return schedule;
+      return scheduleRepository.save(schedule);
     } else {
       throw new InvalidDataException("Another schedule available on this particular Date/Time");
     }

@@ -33,9 +33,9 @@ public class CelebrityService {
   public Celebrity create(Celebrity celebrity, MultipartFile file) throws IOException {
     celebrity.setName(StringUtils.capitalize(celebrity.getName()));
 
-    celebrityRepository.save(celebrity);
     celebrity.setImage(saveImageToPath(celebrity.getId(), file));
-    celebrityRepository.save(celebrity);
+
+    // celebrityRepository.save(celebrity);
     return celebrityRepository.save(celebrity);
   }
 
