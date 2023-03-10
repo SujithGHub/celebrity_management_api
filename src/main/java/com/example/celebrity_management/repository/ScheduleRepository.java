@@ -1,14 +1,16 @@
 package com.example.celebrity_management.repository;
 
-import com.example.celebrity_management.model.Schedule;
-
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ScheduleRepository extends JpaRepository<Schedule, String> {
+import com.example.celebrity_management.model.Schedule;
 
-  List<Schedule> findByCelebrityId(String id);
+public interface ScheduleRepository extends JpaRepository<Schedule, String> {
+ 
+
+  //@Query("select e from Schedule s inner join EnquiryDetail e on e.id=s.enquiryDetails inner join Celebrity c on c.id=e.celebrity where c.id=:id")
+  List<Schedule> findByEnquiryDetails_Celebrity_Id(String id);
 
   String deleteAllByCelebrityId(String id);
 

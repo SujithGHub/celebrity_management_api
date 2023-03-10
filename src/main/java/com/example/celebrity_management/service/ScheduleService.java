@@ -2,13 +2,14 @@ package com.example.celebrity_management.service;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.example.celebrity_management.Exception.InvalidDataException;
-import com.example.celebrity_management.Exception.ResourceNotFoundException;
 import com.example.celebrity_management.model.Schedule;
 import com.example.celebrity_management.repository.ScheduleRepository;
-import com.example.celebrity_management.util.Types;
+
 import jakarta.transaction.Transactional;
 
 @Service
@@ -20,21 +21,22 @@ public class ScheduleService {
 
   public Schedule create(Schedule schedule) throws InvalidDataException {
 
-    List<Schedule> enq = scheduleRepository.findByCelebrityId(schedule.getCelebrity().getId());
+    List<Schedule> enq = scheduleRepository
+        .findByEnquiryDetails_Celebrity_Id(schedule.getEnquiryDetails().getCelebrity().getId());
     int count = 0;
     for (Schedule e : enq) {
-      if (!(schedule.getStartTime().before(e.getStartTime())
-          && schedule.getEndTime().before(e.getEndTime())
+      if (!(schedule.getEnquiryDetails().getStartTime().before(e.getEnquiryDetails().getStartTime())
+          && schedule.getEnquiryDetails().getEndTime().before(e.getEnquiryDetails().getEndTime())
           ||
-          schedule.getStartTime().after(e.getStartTime())
-              && schedule.getEndTime().after(e.getEndTime()))) {
+          schedule.getEnquiryDetails().getStartTime().after(e.getEnquiryDetails().getStartTime())
+              && schedule.getEnquiryDetails().getEndTime().after(e.getEnquiryDetails().getEndTime()))) {
         count++;
       }
     }
     if (count == 0) {
       return scheduleRepository.save(schedule);
     } else {
-      throw new InvalidDataException("Another schedule available on this particular Date/Time");
+      throw new InvalidDataException("Another schedule available on this Date/Time");
     }
   }
 
@@ -51,22 +53,11 @@ public class ScheduleService {
     return getAll();
   }
 
+  public List<Schedule> getByCelebrityId(String id) {
+    return scheduleRepository.findByEnquiryDetails_Celebrity_Id(id);
+  }
+
   public String deleteByCelebrityId(String id) {
     return scheduleRepository.deleteAllByCelebrityId(id);
-  }
-
-  public List<Schedule> getByCelebrityId(String id) {
-    return scheduleRepository.findByCelebrityId(id);
-  }
-
-  public Schedule changeEventStatus(String id, String status) {
-    Schedule schedule = scheduleRepository.findById(id).orElse(null);
-
-    if (schedule == null) {
-      throw new ResourceNotFoundException("Schedule is Null!!!");
-    }
-    schedule.setStatus(Types.EventStatus.valueOf(status));
-
-    return scheduleRepository.save(schedule);
   }
 }

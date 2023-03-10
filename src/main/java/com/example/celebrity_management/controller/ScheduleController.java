@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -41,10 +40,10 @@ public class ScheduleController {
     return scheduleService.getById(id);
   }
 
-  @PostMapping("/status")
-  public Schedule changeStatus(@RequestParam("id") String id, @RequestParam("status") String status) {
-    return scheduleService.changeEventStatus(id, status);
-  }
+  // @PostMapping("/status")
+  // public Schedule changeStatus(@RequestParam("id") String id, @RequestParam("status") String status) {
+  //   return scheduleService.changeEventStatus(id, status);
+  // }
 
   @DeleteMapping("{id}")
   public List<Schedule> deleteScheduleById(@PathVariable String id) {

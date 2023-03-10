@@ -1,13 +1,7 @@
 package com.example.celebrity_management.model;
 
-import java.util.Date;
-
-import com.example.celebrity_management.util.Types;
-import com.example.celebrity_management.util.Types.Availability;
-
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Transient;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -16,16 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class Schedule extends BaseModel {
 
-  private Date startTime;
-  private Date endTime;
-  private String eventName;
+  @OneToOne
+  private EnquiryDetail enquiryDetails;
 
-  private Types.EventStatus status;
-  private Types.Availability availability=Availability.AVAILABLE;
-
-  @Transient
-  private String enquiryId;
-
-  @ManyToOne
-  public Celebrity celebrity;
 }

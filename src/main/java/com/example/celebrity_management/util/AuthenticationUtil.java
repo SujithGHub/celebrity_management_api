@@ -16,15 +16,6 @@ public class AuthenticationUtil {
   @Autowired
   private TokenProvider tokenProvider;
 
-
-  public void AuthenticationManager(
-    AuthenticationManager authenticationManager,
-    TokenProvider tokenProvider
-  ) {
-    this.tokenProvider = tokenProvider;
-    this.authenticationManager = authenticationManager;
-  }
-
   public String authentication(String mailId, String password) {
     try {
       final Authentication authentication = authenticationManager.authenticate(

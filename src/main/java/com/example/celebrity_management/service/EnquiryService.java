@@ -37,27 +37,24 @@ public class EnquiryService {
 
   public EnquiryDetail create(EnquiryDetail enquiryDetail) throws InvalidDataException {
 
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(enquiryDetail.getStartTime());
+    calendar.add(Calendar.HOUR_OF_DAY, 1);
+    Date newDate = calendar.getTime();
 
-Calendar calendar = Calendar.getInstance();
-calendar.setTime(enquiryDetail.getStartTime());
-calendar.add(Calendar.HOUR_OF_DAY, 1);
-Date newDate = calendar.getTime();
-
-if(newDate.after(enquiryDetail.getEndTime())){
-  throw new InvalidDataException("atleast select 1 hour");
-}
-
-
+    if (newDate.after(enquiryDetail.getEndTime())) {
+      throw new InvalidDataException("atleast select 1 hour");
+    }
     if (enquiryDetail.getCelebrity() != null) {
       String inputDateStr = String.valueOf(enquiryDetail.getEndTime());
       DateFormat inputDateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH);
-
       try {
         Date inputDate = inputDateFormat.parse(inputDateStr);
         DateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String outputDateStr = outputDateFormat.format(inputDate);
 
-        BlockDates blockedDate = blockDatesRepo.findByCelebrityIdAndDate(enquiryDetail.getCelebrity().getId(),outputDateStr);
+        BlockDates blockedDate = blockDatesRepo.findByCelebrityIdAndDate(enquiryDetail.getCelebrity().getId(),
+            outputDateStr);
 
         if (blockedDate == null) {
           return enquiryRepository.save(enquiryDetail);
@@ -69,22 +66,14 @@ if(newDate.after(enquiryDetail.getEndTime())){
       }
     }
     return enquiryRepository.save(enquiryDetail);
-
   }
 
   public EnquiryDetail statusChange(Schedule schedule) {
-    if(schedule.getStatus()==Types.EventStatus.ACCEPTED){
+    if (schedule.getEnquiryDetails().getStatus() == Types.EventStatus.ACCEPTED) {
       scheduleService.create(schedule);
     }
-  
-    EnquiryDetail enquiryDetail = enquiryRepository.findById(schedule.getEnquiryId()).orElse(null);
-    enquiryDetail.setStatus(schedule.getStatus());
-    enquiryDetail.setCelebrity(schedule.getCelebrity());
-    enquiryDetail.setStartTime(schedule.getStartTime());
-    enquiryDetail.setEndTime(schedule.getEndTime());
-    enquiryDetail.setEventName(schedule.getEventName());
-
-    
+    EnquiryDetail enquiryDetail = enquiryRepository.findById(schedule.getEnquiryDetails().getId()).orElse(null);
+    enquiryDetail.setStatus(schedule.getEnquiryDetails().getStatus());
     return enquiryRepository.save(enquiryDetail);
   }
 
