@@ -16,27 +16,31 @@ import org.springframework.util.StringUtils;
 
 import com.example.celebrity_management.model.Celebrity;
 import com.example.celebrity_management.repository.CelebrityRepository;
+import com.example.celebrity_management.util.Types;
 
 import jakarta.transaction.Transactional;
 
 @Service
-
 @Transactional
 public class CelebrityService {
 
   @Autowired
   private CelebrityRepository celebrityRepository;
 
-  @Autowired
-  private ScheduleService scheduleService;
-
   public Celebrity create(Celebrity celebrity, MultipartFile file) throws IOException {
     celebrity.setName(StringUtils.capitalize(celebrity.getName()));
 
-    celebrity.setImage(saveImageToPath(celebrity.getId(), file));
+    celebrity.setImage(saveImageToPath(celebrity.getName(), file));
 
     // celebrityRepository.save(celebrity);
     return celebrityRepository.save(celebrity);
+  }
+
+  // FOR CHANGE THE STATUS
+  public List<Celebrity> changeStatus(String id) throws IOException{
+    Celebrity celebrity = celebrityRepository.findById(id).orElse(null);
+    celebrity.setStatus(celebrity.getStatus().equals(Types.Status.ACTIVE) ? Types.Status.INACTIVE : Types.Status.ACTIVE);
+    return getAll();
   }
 
   public List<Celebrity> getAll() throws IOException {
@@ -57,19 +61,19 @@ public class CelebrityService {
     return celebrityRepository.findByUsersId(Id);
   }
 
-  public List<Celebrity> delete(String id) throws IOException {
-    scheduleService.deleteByCelebrityId(id);
-    celebrityRepository.deleteById(id);
-    return getAll();
-  }
+  // public List<Celebrity> delete(String id) throws IOException {
+  //   scheduleService.deleteByCelebrityId(id);
+  //   celebrityRepository.deleteById(id);
+  //   return getAll();
+  // }
 
-  private String saveImageToPath(String id, MultipartFile file) throws IOException {
+  private String saveImageToPath(String name, MultipartFile file) throws IOException {
     String dir = System.getProperty("user.home").concat("/").concat("resources");
     File directory = new File(dir);
     if (!directory.exists()) {
       directory.mkdirs();
     }
-    Path path = Paths.get(dir + "/" + id.concat(".jpeg"));
+    Path path = Paths.get(dir + "/" + name.concat(".jpeg"));
     Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
     return path.toString();
   }

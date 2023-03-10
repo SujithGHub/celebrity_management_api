@@ -57,7 +57,7 @@ public class ScheduleService {
     return scheduleRepository.findByEnquiryDetails_Celebrity_Id(id);
   }
 
-  public String deleteByCelebrityId(String id) {
-    return scheduleRepository.deleteAllByCelebrityId(id);
-  }
+  // public String deleteByCelebrityId(String id) {
+  //   return scheduleRepository.deleteAllByCelebrityId(id);
+  // }
 }

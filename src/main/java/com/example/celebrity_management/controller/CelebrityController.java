@@ -54,8 +54,8 @@ public class CelebrityController {
     return celebrityService.getByAdminId(id);
   }
 
-  @DeleteMapping(value = "/{id}")
-  public List<Celebrity> deleteById(@PathVariable String id) throws IOException {
-    return celebrityService.delete(id);
-  }
+  // @DeleteMapping(value = "/{id}")
+  // public List<Celebrity> deleteById(@PathVariable String id) throws IOException {
+  //   return celebrityService.delete(id);
+  // }
 }
