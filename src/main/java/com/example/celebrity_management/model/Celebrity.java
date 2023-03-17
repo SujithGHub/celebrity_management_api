@@ -7,7 +7,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.example.celebrity_management.util.Types;
 import com.example.celebrity_management.util.Types.Status;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,12 +29,11 @@ public class Celebrity extends BaseModel {
   private String phoneNumber;
   private String gender;
 
-  @JsonFormat(pattern = "dd/MM/yyyy")
   private Date dateOfBirth;
   private String profession;
   private String description;
   private String address;
-  private Types.Status status=Status.ACTIVE;
+  private Types.Status status = Status.ACTIVE;
   private String image;
   @Transient
   private String base64Image;

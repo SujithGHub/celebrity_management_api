@@ -1,18 +1,19 @@
 package com.example.celebrity_management.service;
 
-import java.util.List;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Base64;
 import java.nio.file.StandardCopyOption;
+import java.util.Base64;
+import java.util.List;
 import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.celebrity_management.model.Celebrity;
 import com.example.celebrity_management.repository.CelebrityRepository;
@@ -37,9 +38,10 @@ public class CelebrityService {
   }
 
   // FOR CHANGE THE STATUS
-  public List<Celebrity> changeStatus(String id) throws IOException{
+  public List<Celebrity> changeStatus(String id) throws IOException {
     Celebrity celebrity = celebrityRepository.findById(id).orElse(null);
-    celebrity.setStatus(celebrity.getStatus().equals(Types.Status.ACTIVE) ? Types.Status.INACTIVE : Types.Status.ACTIVE);
+    celebrity
+        .setStatus(celebrity.getStatus().equals(Types.Status.ACTIVE) ? Types.Status.INACTIVE : Types.Status.ACTIVE);
     return getAll();
   }
 
@@ -60,12 +62,6 @@ public class CelebrityService {
   public List<Celebrity> getByAdminId(String Id) {
     return celebrityRepository.findByUsersId(Id);
   }
-
-  // public List<Celebrity> delete(String id) throws IOException {
-  //   scheduleService.deleteByCelebrityId(id);
-  //   celebrityRepository.deleteById(id);
-  //   return getAll();
-  // }
 
   private String saveImageToPath(String name, MultipartFile file) throws IOException {
     String dir = System.getProperty("user.home").concat("/").concat("resources");

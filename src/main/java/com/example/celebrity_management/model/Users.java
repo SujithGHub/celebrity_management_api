@@ -21,7 +21,7 @@ public class Users extends BaseModel implements UserDetails {
   private String phoneNumber;
   private boolean locked;
   private boolean credentialsExpired;
-  private Boolean isActive;
+  private boolean isActive;
   @Transient
   private String roleId;
 
@@ -30,9 +30,7 @@ public class Users extends BaseModel implements UserDetails {
 
   @Override
   public List<GrantedAuthority> getAuthorities() {
-    List<GrantedAuthority> authorities = new ArrayList<>();
-    authorities.add(new SimpleGrantedAuthority("USER_ROLE"));
-    return authorities;
+    return List.of(new SimpleGrantedAuthority("USER_ROLE"));
   }
 
   @Override

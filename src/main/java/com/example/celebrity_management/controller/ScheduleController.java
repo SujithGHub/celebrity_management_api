@@ -40,10 +40,10 @@ public class ScheduleController {
     return scheduleService.getById(id);
   }
 
-  // @PostMapping("/status")
-  // public Schedule changeStatus(@RequestParam("id") String id, @RequestParam("status") String status) {
-  //   return scheduleService.changeEventStatus(id, status);
-  // }
+  @PostMapping("/status/{id}")
+  public Schedule changeStatus(@PathVariable("id") String id) {
+    return scheduleService.changeEventStatus(id);
+  }
 
   @DeleteMapping("{id}")
   public List<Schedule> deleteScheduleById(@PathVariable String id) {

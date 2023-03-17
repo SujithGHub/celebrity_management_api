@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.model.Schedule;
 import com.example.celebrity_management.repository.ScheduleRepository;
+import com.example.celebrity_management.util.Types.EventStatus;
 
 import jakarta.transaction.Transactional;
 
@@ -57,7 +58,16 @@ public class ScheduleService {
     return scheduleRepository.findByEnquiryDetails_Celebrity_Id(id);
   }
 
-  // public String deleteByCelebrityId(String id) {
-  //   return scheduleRepository.deleteAllByCelebrityId(id);
-  // }
+  public Schedule changeEventStatus(String id) {
+
+    Schedule schedule = scheduleRepository.findById(id).orElse(null);
+
+    EventStatus status = schedule.getEnquiryDetails().getStatus();
+    if (status == EventStatus.ACCEPTED) {
+      schedule.getEnquiryDetails().setStatus(EventStatus.REJECTED);
+    } else {
+      schedule.getEnquiryDetails().setStatus(EventStatus.ACCEPTED);
+    }
+    return scheduleRepository.save(schedule);
+  }
 }

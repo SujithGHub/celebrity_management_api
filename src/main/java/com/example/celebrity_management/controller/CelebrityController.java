@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,21 +25,21 @@ public class CelebrityController {
 
   @Autowired
   private CelebrityService celebrityService;
-  @Autowired 
+  @Autowired
   private ObjectMapper objectMapper;
 
   @PostMapping
-  public Celebrity createCelebrity(@RequestPart("celebrity") String celebrity,MultipartFile file ) throws IOException{
-    return celebrityService.create(objectMapper.readValue(celebrity, Celebrity.class),file);
+  public Celebrity createCelebrity(@RequestPart("celebrity") String celebrity, MultipartFile file) throws IOException {
+    return celebrityService.create(objectMapper.readValue(celebrity, Celebrity.class), file);
   }
+
   @PostMapping(value = "/change-status/{id}")
-  public List<Celebrity> changeStatus(@PathVariable("id") String id) throws IOException{
+  public List<Celebrity> changeStatus(@PathVariable("id") String id) throws IOException {
     return celebrityService.changeStatus(id);
   }
 
-
   @GetMapping(value = "/get-all-celebrity")
-  public List<Celebrity> getAllCelebrityDetails() throws IOException{
+  public List<Celebrity> getAllCelebrityDetails() throws IOException {
     return celebrityService.getAll();
   }
 
@@ -53,9 +52,4 @@ public class CelebrityController {
   public List<Celebrity> getByAdminId(@PathVariable String id) {
     return celebrityService.getByAdminId(id);
   }
-
-  // @DeleteMapping(value = "/{id}")
-  // public List<Celebrity> deleteById(@PathVariable String id) throws IOException {
-  //   return celebrityService.delete(id);
-  // }
 }

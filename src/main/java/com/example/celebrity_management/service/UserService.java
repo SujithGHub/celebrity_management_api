@@ -70,7 +70,6 @@ public class UserService implements UserDetailsService {
       throw new InvalidDataException("Invalid password");
     } else {
       return authenticationUtil.authentication(user.getMailId(), loginDto.getPassword());
-
     }
   }
 }
