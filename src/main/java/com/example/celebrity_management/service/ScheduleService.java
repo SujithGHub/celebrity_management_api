@@ -1,10 +1,15 @@
 package com.example.celebrity_management.service;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.model.Schedule;
@@ -19,6 +24,10 @@ public class ScheduleService {
 
   @Autowired
   private ScheduleRepository scheduleRepository;
+  @Autowired
+  JavaMailSender mailSender;
+  @Autowired
+  TemplateEngine engine;
 
   public Schedule create(Schedule schedule) throws InvalidDataException {
 
@@ -35,10 +44,26 @@ public class ScheduleService {
       }
     }
     if (count == 0) {
+      confirmationMail(schedule);
       return scheduleRepository.save(schedule);
     } else {
       throw new InvalidDataException("Another schedule available on this Date/Time");
     }
+  }
+
+  public void confirmationMail(Schedule schedule) {
+    String[] to = { schedule.getEnquiryDetails().getMailId(), schedule.getEnquiryDetails().getCelebrity().getMailId() };
+    String subject = "CONFIRMATION MAIL";
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(schedule.getEnquiryDetails().getStartTime());
+    Date newDate = calendar.getTime();
+    String body = " On this day "+ newDate +" your event "+schedule.getEnquiryDetails().getEventName() + " Has been scheduled  " ;
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setCc(to);
+    message.setSubject(subject);
+    message.setText(body);
+    mailSender.send(message);
+
   }
 
   public List<Schedule> getAll() {

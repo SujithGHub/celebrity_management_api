@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.celebrity_management.props.JwtProps;
 import com.example.celebrity_management.service.UserService;
 
 import jakarta.servlet.FilterChain;
@@ -24,9 +23,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-
-  @Autowired
-  private JwtProps jwtProps;
 
   @Autowired
   private TokenProvider jwtTokenUtil;
@@ -44,9 +40,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     skipUrls.add("/user");
     skipUrls.add("/role/{id}");
     skipUrls.add("/user/login");
-        skipUrls.add("/schedule");
+    skipUrls.add("/schedule");
     skipUrls.add("/enquiry");
-;
+    
 
     return skipUrls
         .stream()
@@ -60,7 +56,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       String header = request.getHeader("Authorization");
       String mailId = null;
       String authToken = null;
-      authToken = header.replace(jwtProps.getTokenPrefix(), "");
+
+      authToken = header.substring(7);
+
       mailId = jwtTokenUtil.getEmailFromToken(authToken);
       UserDetails userDetails = userService.loadUserByUsername(mailId);
 
