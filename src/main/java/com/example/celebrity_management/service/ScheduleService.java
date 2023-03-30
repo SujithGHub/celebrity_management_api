@@ -1,21 +1,23 @@
 package com.example.celebrity_management.service;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.model.Schedule;
 import com.example.celebrity_management.repository.ScheduleRepository;
 import com.example.celebrity_management.util.Types.EventStatus;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -25,11 +27,13 @@ public class ScheduleService {
   @Autowired
   private ScheduleRepository scheduleRepository;
   @Autowired
-  JavaMailSender mailSender;
-  @Autowired
-  TemplateEngine engine;
+  JavaMailSender sender;
 
-  public Schedule create(Schedule schedule) throws InvalidDataException {
+  @Autowired
+  private Configuration freemarkerConfig;
+
+  
+  public Schedule create(Schedule schedule) throws Exception {
 
     List<Schedule> enq = scheduleRepository
         .findByEnquiryDetails_Celebrity_Id(schedule.getEnquiryDetails().getCelebrity().getId());
@@ -45,24 +49,30 @@ public class ScheduleService {
     }
     if (count == 0) {
       confirmationMail(schedule);
+
       return scheduleRepository.save(schedule);
     } else {
       throw new InvalidDataException("Another schedule available on this Date/Time");
     }
   }
 
-  public void confirmationMail(Schedule schedule) {
+  public void confirmationMail(Schedule schedule) throws Exception {
     String[] to = { schedule.getEnquiryDetails().getMailId(), schedule.getEnquiryDetails().getCelebrity().getMailId() };
     String subject = "CONFIRMATION MAIL";
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(schedule.getEnquiryDetails().getStartTime());
-    Date newDate = calendar.getTime();
-    String body = " On this day "+ newDate +" your event "+schedule.getEnquiryDetails().getEventName() + " Has been scheduled  " ;
-    SimpleMailMessage message = new SimpleMailMessage();
-    message.setCc(to);
-    message.setSubject(subject);
-    message.setText(body);
-    mailSender.send(message);
+    MimeMessage message = sender.createMimeMessage();
+
+    MimeMessageHelper helper = new MimeMessageHelper(message);
+    // Using a subfolder such as /templates here
+    freemarkerConfig.setClassForTemplateLoading(ScheduleService.class, "/template");
+
+    Template t = freemarkerConfig.getTemplate("MailSender.html");
+    String text = FreeMarkerTemplateUtils.processTemplateIntoString(t, schedule.getEnquiryDetails());
+
+    helper.setTo(to);
+    helper.setText(text, true);
+    helper.setSubject(subject);
+
+    sender.send(message);
 
   }
 

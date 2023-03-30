@@ -21,7 +21,7 @@ public class ScheduleController {
   private ScheduleService scheduleService;
 
   @PostMapping
-  public Schedule createSchedule(@RequestBody Schedule ScheduleModel) {
+  public Schedule createSchedule(@RequestBody Schedule ScheduleModel) throws Exception {
     return scheduleService.create(ScheduleModel);
   }
 
@@ -41,7 +41,7 @@ public class ScheduleController {
   }
 
   @PostMapping("/status/{id}")
-  public Schedule changeStatus(@PathVariable("id") String id) {
+  public Schedule changeStatus(@PathVariable("id") String id)  {
     return scheduleService.changeEventStatus(id);
   }
 

@@ -68,7 +68,7 @@ public class EnquiryService {
     return enquiryRepository.save(enquiryDetail);
   }
 
-  public EnquiryDetail statusChange(Schedule schedule) {
+  public EnquiryDetail statusChange(Schedule schedule) throws Exception {
     if (schedule.getEnquiryDetails().getStatus() == Types.EventStatus.ACCEPTED) {
       scheduleService.create(schedule);
     }

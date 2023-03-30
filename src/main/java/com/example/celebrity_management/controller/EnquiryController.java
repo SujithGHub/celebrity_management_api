@@ -28,7 +28,7 @@ public class EnquiryController {
   }
 
   @PostMapping(value = "/status")
-  public EnquiryDetail Status(@RequestBody Schedule schedule) {
+  public EnquiryDetail Status(@RequestBody Schedule schedule) throws Exception {
     return enquiryService.statusChange(schedule);
   }
 
