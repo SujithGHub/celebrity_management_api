@@ -10,6 +10,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -31,7 +32,7 @@ public class CelebrityService {
   public Celebrity create(Celebrity celebrity, MultipartFile file) throws IOException {
     celebrity.setName(StringUtils.capitalize(celebrity.getName()));
 
-    celebrity.setImage(saveImageToPath(celebrity.getName(), file));
+    celebrity.setImage(saveImageToPath(celebrity.getId(), file));
 
     // celebrityRepository.save(celebrity);
     return celebrityRepository.save(celebrity);
@@ -48,11 +49,15 @@ public class CelebrityService {
   public List<Celebrity> getAll() throws IOException {
     List<Celebrity> celebrity = celebrityRepository.findAll();
     for (Celebrity celb : celebrity) {
+      if(celb.getImage()==null){
+        continue;
+      }
       if (StringUtils.hasText(celb.getImage())) {
         setBase64Image(celb);
       }
     }
     return celebrity;
+    // return celebrityRepository.findAll();
   }
 
   public Optional<Celebrity> get(String id) {
@@ -64,6 +69,9 @@ public class CelebrityService {
   }
 
   private String saveImageToPath(String name, MultipartFile file) throws IOException {
+    if(file.getSize()>=100*1024){
+      throw new FileSizeLimitExceededException("upload file below 100kb", file.getSize(), 100*1024);
+    }
     String dir = System.getProperty("user.home").concat("/").concat("resources");
     File directory = new File(dir);
     if (!directory.exists()) {

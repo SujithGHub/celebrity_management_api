@@ -37,6 +37,7 @@ public class ScheduleService {
 
     List<Schedule> enq = scheduleRepository
         .findByEnquiryDetails_Celebrity_Id(schedule.getEnquiryDetails().getCelebrity().getId());
+        
     int count = 0;
     for (Schedule e : enq) {
       if (!(schedule.getEnquiryDetails().getStartTime().before(e.getEnquiryDetails().getStartTime())
@@ -48,7 +49,9 @@ public class ScheduleService {
       }
     }
     if (count == 0) {
-      confirmationMail(schedule);
+      //to Client
+      confirmationMail(schedule ,"Client.html",schedule.getEnquiryDetails().getCelebrity().getMailId());
+      confirmationMail(schedule ,"Celebrity.html",schedule.getEnquiryDetails().getMailId());
 
       return scheduleRepository.save(schedule);
     } else {
@@ -56,8 +59,8 @@ public class ScheduleService {
     }
   }
 
-  public void confirmationMail(Schedule schedule) throws Exception {
-    String[] to = { schedule.getEnquiryDetails().getMailId(), schedule.getEnquiryDetails().getCelebrity().getMailId() };
+  public void confirmationMail(Schedule schedule,String fileName,String mailId) throws Exception {
+    
     String subject = "CONFIRMATION MAIL";
     MimeMessage message = sender.createMimeMessage();
 
@@ -65,10 +68,10 @@ public class ScheduleService {
     // Using a subfolder such as /templates here
     freemarkerConfig.setClassForTemplateLoading(ScheduleService.class, "/template");
 
-    Template t = freemarkerConfig.getTemplate("MailSender.html");
+    Template t = freemarkerConfig.getTemplate(fileName);
     String text = FreeMarkerTemplateUtils.processTemplateIntoString(t, schedule.getEnquiryDetails());
 
-    helper.setTo(to);
+    helper.setTo(mailId);
     helper.setText(text, true);
     helper.setSubject(subject);
 
