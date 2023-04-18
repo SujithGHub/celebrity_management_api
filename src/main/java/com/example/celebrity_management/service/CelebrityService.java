@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.model.Celebrity;
 import com.example.celebrity_management.repository.CelebrityRepository;
 import com.example.celebrity_management.util.Types;
@@ -32,9 +33,12 @@ public class CelebrityService {
   public Celebrity create(Celebrity celebrity, MultipartFile file) throws IOException {
     celebrity.setName(StringUtils.capitalize(celebrity.getName()));
 
-    celebrity.setImage(saveImageToPath(celebrity.getId(), file));
-
-    // celebrityRepository.save(celebrity);
+    if (file == null && !StringUtils.hasText(celebrity.getImage())){
+       throw new InvalidDataException("Please upload image.");
+    } else if(file != null) {
+      celebrityRepository.save(celebrity);
+      celebrity.setImage(saveImageToPath(celebrity.getId(), file));
+    }
     return celebrityRepository.save(celebrity);
   }
 

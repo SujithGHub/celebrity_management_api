@@ -31,6 +31,7 @@ public class Celebrity extends BaseModel {
 
   private Date dateOfBirth;
   private String profession;
+  @Column(length = 1000)
   private String description;
   private String address;
   private Types.Status status = Status.ACTIVE;

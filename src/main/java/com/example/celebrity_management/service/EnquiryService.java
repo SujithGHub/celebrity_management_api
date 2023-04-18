@@ -74,6 +74,9 @@ public class EnquiryService {
     }
     EnquiryDetail enquiryDetail = enquiryRepository.findById(schedule.getEnquiryDetails().getId()).orElse(null);
     enquiryDetail.setStatus(schedule.getEnquiryDetails().getStatus());
+    enquiryDetail.setCelebrity(schedule.getEnquiryDetails().getCelebrity());
+    enquiryDetail.setStartTime(schedule.getEnquiryDetails().getStartTime());
+    enquiryDetail.setEndTime(schedule.getEnquiryDetails().getEndTime());
     return enquiryRepository.save(enquiryDetail);
   }
 

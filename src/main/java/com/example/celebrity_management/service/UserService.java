@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.Exception.ResourceNotFoundException;
 import com.example.celebrity_management.dto.LoginDto;
+import com.example.celebrity_management.dto.UserDto;
 import com.example.celebrity_management.model.Users;
 import com.example.celebrity_management.repository.RoleRepository;
 import com.example.celebrity_management.repository.UserRepository;
@@ -62,14 +63,21 @@ public class UserService implements UserDetailsService {
     return (UserDetails) celebrityModel;
   }
 
-  public String login(LoginDto loginDto) throws Exception {
+  public UserDto login(LoginDto loginDto) throws Exception {
     Users user = userRepository.findByMailId(loginDto.getMailId()).orElse(null);
     if (user == null) {
       throw new ResourceNotFoundException("User Not Found");
     } else if (!bCryptPasswordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
       throw new InvalidDataException("Invalid password");
     } else {
-      return authenticationUtil.authentication(user.getMailId(), loginDto.getPassword());
+      String token = authenticationUtil.authentication(user.getMailId(), loginDto.getPassword());
+      UserDto userDto = new UserDto();
+      userDto.setId(user.getId());
+      userDto.setMailId(user.getMailId());
+      userDto.setName(user.getName());
+      userDto.setPhoneNumber(user.getPhoneNumber());
+      userDto.setToken(token);
+      return userDto;
     }
   }
 }

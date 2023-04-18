@@ -42,6 +42,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     skipUrls.add("/user/login");
     skipUrls.add("/schedule");
     skipUrls.add("/enquiry");
+    skipUrls.add("/celebrity/get-all-celebrity");
+    skipUrls.add("/client");
+
     
 
     return skipUrls
