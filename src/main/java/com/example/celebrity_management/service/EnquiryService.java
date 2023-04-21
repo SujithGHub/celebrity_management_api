@@ -59,7 +59,7 @@ public class EnquiryService {
         if (blockedDate == null) {
           return enquiryRepository.save(enquiryDetail);
         } else {
-          throw new InvalidDataException("celebrity not available on this particular Date");
+          throw new InvalidDataException("Celebrity Not Available on this Date");
         }
       } catch (ParseException e) {
         System.out.println("Error parsing date: " + e.getMessage());

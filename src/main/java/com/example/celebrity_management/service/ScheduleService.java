@@ -2,6 +2,7 @@ package com.example.celebrity_management.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -49,8 +50,16 @@ public class ScheduleService {
     }
     if (count == 0) {
       //to Client
-      confirmationMail(schedule ,"Client.html",schedule.getEnquiryDetails().getCelebrity().getMailId());
-      confirmationMail(schedule ,"Celebrity.html",schedule.getEnquiryDetails().getMailId());
+      CompletableFuture.runAsync(() -> {
+
+        try {
+          confirmationMail(schedule ,"Client.html",schedule.getEnquiryDetails().getCelebrity().getMailId());
+          confirmationMail(schedule ,"Celebrity.html",schedule.getEnquiryDetails().getMailId());
+        } catch(Exception e) {
+           e.printStackTrace();
+           Thread.currentThread().interrupt();
+        }
+      });
 
       return scheduleRepository.save(schedule);
     } else {
