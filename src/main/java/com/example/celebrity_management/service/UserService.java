@@ -70,7 +70,8 @@ public class UserService implements UserDetailsService {
     } else if (!bCryptPasswordEncoder.matches(loginDto.getPassword(), user.getPassword())) {
       throw new InvalidDataException("Invalid password");
     } else {
-      String token = authenticationUtil.authentication(user.getMailId(), loginDto.getPassword());
+      String token = authenticationUtil.authentication(user.getMailId(), loginDto.getPassword(),user.getId()); 
+      
       UserDto userDto = new UserDto();
       userDto.setId(user.getId());
       userDto.setMailId(user.getMailId());

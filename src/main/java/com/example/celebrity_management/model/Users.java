@@ -18,9 +18,7 @@ public class Users extends BaseModel implements UserDetails {
   private String mailId;
   private String password;
   private String phoneNumber;
-  private boolean locked;
-  private boolean credentialsExpired;
-  private boolean isActive;
+
   @Transient
   private String roleId;
 
@@ -44,16 +42,16 @@ public class Users extends BaseModel implements UserDetails {
 
   @Override
   public boolean isAccountNonLocked() {
-    return !locked;
+    return true;
   }
 
   @Override
   public boolean isCredentialsNonExpired() {
-    return !credentialsExpired;
+    return true;
   }
 
   @Override
   public boolean isEnabled() {
-    return isActive;
+    return true;
   }
 }

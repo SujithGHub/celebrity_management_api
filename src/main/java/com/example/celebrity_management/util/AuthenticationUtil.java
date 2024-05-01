@@ -16,13 +16,13 @@ public class AuthenticationUtil {
   @Autowired
   private TokenProvider tokenProvider;
 
-  public String authentication(String mailId, String password) {
+  public String authentication(String mailId, String password,String id) {
     try {
       final Authentication authentication = authenticationManager.authenticate(
         new UsernamePasswordAuthenticationToken(mailId, password)
       );
       SecurityContextHolder.getContext().setAuthentication(authentication);
-      return tokenProvider.generateToken(authentication, mailId, password);
+      return tokenProvider.generateToken(authentication, mailId, id);
     } catch (Exception e) {
       e.printStackTrace();
       return "";

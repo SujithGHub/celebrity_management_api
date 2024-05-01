@@ -9,6 +9,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +53,20 @@ public class CelebrityService {
 
   public List<Celebrity> getAll() throws IOException {
     List<Celebrity> celebrity = celebrityRepository.findAll();
-    for (Celebrity celb : celebrity) {
-      if(celb.getImage()==null){
-        continue;
-      }
-      if (StringUtils.hasText(celb.getImage())) {
-        setBase64Image(celb);
-      }
-    }
+    CompletableFuture.runAsync(() -> {
+      try {
+        
+        for (Celebrity celb : celebrity) {
+          if(celb.getImage()==null){
+            continue;
+          }
+          if (StringUtils.hasText(celb.getImage())) {
+            setBase64Image(celb);
+          }
+        }
+      } catch (Exception e) {
+        // TODO: handle exception
+      }});
     return celebrity;
     // return celebrityRepository.findAll();
   }
