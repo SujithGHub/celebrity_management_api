@@ -1,4 +1,4 @@
-package com.example.celebrity_management.service;
+  package com.example.celebrity_management.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,20 +53,13 @@ public class CelebrityService {
 
   public List<Celebrity> getAll() throws IOException {
     List<Celebrity> celebrity = celebrityRepository.findAll();
-    CompletableFuture.runAsync(() -> {
-      try {
         
         for (Celebrity celb : celebrity) {
-          if(celb.getImage()==null){
-            continue;
-          }
-          if (StringUtils.hasText(celb.getImage())) {
+          if (celb.getImage()!=null && StringUtils.hasText(celb.getImage())) {
             setBase64Image(celb);
           }
         }
-      } catch (Exception e) {
-        // TODO: handle exception
-      }});
+
     return celebrity;
     // return celebrityRepository.findAll();
   }
@@ -94,13 +87,19 @@ public class CelebrityService {
   }
 
   private void setBase64Image(Celebrity celebrity) throws IOException {
-    Path imagePath = Path.of(celebrity.getImage());
-
-    // Read the image file into a byte array
-    byte[] imageBytes = Files.readAllBytes(imagePath);
-
-    // Encode the byte array as a Base64 string
-    celebrity.setBase64Image(Base64.getEncoder().encodeToString(imageBytes));
+    try {
+      Path imagePath = Path.of(celebrity.getImage());
+  
+      // Read the image file into a byte array
+      byte[] imageBytes = Files.readAllBytes(imagePath);
+  
+      // Encode the byte array as a Base64 string
+      celebrity.setBase64Image(Base64.getEncoder().encodeToString(imageBytes));
+  } catch (IOException e) {
+      // Handle the exception, for example, by logging an error message
+      System.err.println("Error reading the image file: " + e.getMessage());
+      // Optionally, you can set a default base64 image or take other appropriate action
+  }
   }
 
 }
