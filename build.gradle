@@ -28,7 +28,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.thymeleaf:thymeleaf:2.0.5'
 	implementation 'org.thymeleaf:thymeleaf-spring5:3.1.1.RELEASE'
-	implementation 'org.springframework.boot:spring-boot-starter-freemarker:3.0.4'
+	implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 
 
 	compileOnly 'org.projectlombok:lombok'
@@ -39,6 +39,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.0-rc2'
+	// https://mvnrepository.com/artifact/com.sun.mail/jakarta.mail
+	implementation 'com.sun.mail:jakarta.mail:2.0.1'
 
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }

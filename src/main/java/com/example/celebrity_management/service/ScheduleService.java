@@ -69,7 +69,7 @@ public class ScheduleService {
 
   public void confirmationMail(Schedule schedule,String fileName,String mailId) throws Exception {
     
-    String subject = "CONFIRMATION MAIL";
+    String subject = "Event Allocation Notification";
     MimeMessage message = sender.createMimeMessage();
 
     MimeMessageHelper helper = new MimeMessageHelper(message);

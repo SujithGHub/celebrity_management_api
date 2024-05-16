@@ -6,35 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <style>
+
+    body * p {
+      text-indent: 3rem;
+    }
+
     .mail-body{
       text-indent: 3rem;
     }
+
     .image{
       text-align: center;
     }
+
   </style>
 </head>
 <body>
   <div class="image">
     <img src="../logo.png" width="200" height="180" alt="Logo"></img>
   </div>
-    <p>Subject: Invitation Sent to </p>
-    
-    <p>Dear [Client's Name],</p>
-    
-    <p class="mail-body">I am writing to inform you that we have successfully sent an invitation to [Celebrity Name] for the upcoming event,
-    [Event Name], which will be held on [Event Date] at [Event Venue]. We have posted the enquiry with their admin and are
-    awaiting their response.</p>
-    
-    <p class="mail-body">The email sent to [Celebrity Name] includes all the necessary details, such as the event date, time, and location, as
-    well as information about the event's purpose and expected number of attendees. We have also made arrangements for their
-    transportation and accommodations.</p>
-    
-    <p class="mail-body">Once we receive a confirmation from [Celebrity Name]'s admin, we will update you promptly.</p>
-    
-    <p class="mail-body">Thank you for choosing us for this event, and we look forward to working with you.</p>
-    
-    <p style="text-align: end;">Sincerely,</p>
-    <p style="text-align: end;">[Your Name]</p>
+  <p><strong>Dear ${name},</strong></p>
+  <p class="mail-body">I am pleased to inform you that your request to participate in the upcoming event, <strong>${eventName}</strong>, has been accepted. The event is scheduled to take place on <strong>${startTime?date?string["dd-MM-yyyy"]}</strong> at <strong>${location}</strong>. We have notified <strong>${celebrity.name}</strong>'s admin of your participation, and further steps will be taken accordingly.</p>
+  <p><strong>Event Start Time:</strong> ${startTime?datetime?string["dd-MM-yyyy hh:mm a"]}</p>
+  <p><strong>Event End Time:</strong> ${endTime?datetime?string["dd-MM-yyyy hh:mm a"]}</p>
+  <p>Once we receive confirmation from ${celebrity.name}'s admin, we will promptly update you on the next steps.</p>
+  <p>Thank you for choosing us for this event, and we look forward to your participation.</p>
+  <p style="text-align: end;">Sincerely,</p>
+  <p style="text-align: end;;font-weight: bold;">Admin<br/>(Innovative Services)</p>
 </body>
 </html>
