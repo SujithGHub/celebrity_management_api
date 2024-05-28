@@ -13,6 +13,7 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.model.Schedule;
 import com.example.celebrity_management.repository.ScheduleRepository;
+import com.example.celebrity_management.util.Types;
 import com.example.celebrity_management.util.Types.EventStatus;
 
 import freemarker.template.Configuration;
@@ -32,8 +33,13 @@ public class ScheduleService {
   @Autowired
   private Configuration freemarkerConfig;
 
+  @Autowired
+  private PrefixService prefixService;
   
   public Schedule create(Schedule schedule) throws Exception {
+
+    String prefix=prefixService.createNumberSequence(Types.PrefixType.SCHEDULE);
+    schedule.setScheduleNo(prefix);
 
     List<Schedule> enq = scheduleRepository
         .findByEnquiryDetails_Celebrity_Id(schedule.getEnquiryDetails().getCelebrity().getId());

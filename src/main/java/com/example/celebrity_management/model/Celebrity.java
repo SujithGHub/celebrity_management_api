@@ -1,6 +1,7 @@
 package com.example.celebrity_management.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -10,7 +11,9 @@ import com.example.celebrity_management.util.Types.Status;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,11 +39,14 @@ public class Celebrity extends BaseModel {
   private String address;
   private Types.Status status = Status.ACTIVE;
   private String image;
-  @Transient
-  private String base64Image;
 
   @ManyToOne
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Users users;
+
+  @ManyToMany
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private List<Category> categories;
+
 
 }
