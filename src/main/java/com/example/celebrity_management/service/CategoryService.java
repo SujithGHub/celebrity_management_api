@@ -35,7 +35,7 @@ public class CategoryService {
     }
 
     public void deleteById(String id){
-        List<Celebrity> cele=celebrityRepository.findByCategoryId(id);
+        List<Celebrity> cele=celebrityRepository.findByCategories_Id(id);
         if (!cele.isEmpty()) {
             throw new InvalidDataException("celebrities are available in this category");
         }

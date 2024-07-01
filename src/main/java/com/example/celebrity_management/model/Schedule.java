@@ -12,7 +12,6 @@ public class Schedule extends BaseModel {
 
   @OneToOne
   private EnquiryDetail enquiryDetails;
-
   private String scheduleNo;
 
 }

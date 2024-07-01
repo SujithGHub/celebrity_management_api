@@ -39,19 +39,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request)
       throws ServletException {
-    skipUrls.add("/user");
-    skipUrls.add("/role/{id}");
     skipUrls.add("/user/login");
-    skipUrls.add("/schedule");
-    skipUrls.add("/enquiry");
     skipUrls.add("/celebrity/get-all-celebrity");
-    skipUrls.add("/client");
     skipUrls.add("/topics/get-all-topic");
     skipUrls.add("/category/get-all-category");
     skipUrls.add("/programs/get-all-programs");
     skipUrls.add("/resources/**");
-
-    
+    skipUrls.add("/celebrity/get/category-and-topic");
+    skipUrls.add("/enquiry");
+  
 
     return skipUrls
         .stream()

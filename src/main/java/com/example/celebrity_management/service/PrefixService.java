@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.example.celebrity_management.Exception.InvalidDataException;
 import com.example.celebrity_management.model.Prefix;
 import com.example.celebrity_management.repository.PrefixRepo;
@@ -21,7 +19,8 @@ public class PrefixService {
     
     public String createNumberSequence(Types.PrefixType prefixType) {
         Prefix prefix = getPrefixWithRightLock(prefixType);
-        String value = formatPrefix(prefix.getPrefix(),Long.toString(prefix.getCurrentSequence()));
+        long currentSequence = prefix.getCurrentSequence();
+        String value = formatPrefix(prefix.getPrefix(), currentSequence);
         prefix.incrementSqeuenceNo();
         prefixRepo.save(prefix);
         return value;
@@ -42,13 +41,9 @@ public class PrefixService {
 
         return prefix;
     }
-
-    private String formatPrefix(String prefix, String numberSequence) {
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(prefix);
-        stringBuilder.append("-");
-        stringBuilder.append(numberSequence);
-        return stringBuilder.toString();
+ 
+    private String formatPrefix(String prefix, long numberSequence) {
+        return prefix + "-" + String.format("%04d", numberSequence);
     }
 
     public Prefix createNew(Prefix prefix) {

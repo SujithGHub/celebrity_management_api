@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
@@ -55,7 +56,6 @@ public class CelebrityService {
   public List<Celebrity> getAll() throws IOException {
 
     return celebrityRepository.findAll();
-    // return celebrityRepository.findAll();
   }
 
   public Optional<Celebrity> get(String id) {
@@ -81,11 +81,30 @@ public class CelebrityService {
     return path.toString().replace(homePath, "/api");
   }
 
-  public List<Celebrity> getCelebrityByCategoryId(String id){
-    return celebrityRepository.findByCategoryId(id);
+   public List<Celebrity> getCelebrityByCategoryId(String id){
+    return celebrityRepository.findByCategories_Id(id);
+   }
+
+    public List<Celebrity> getCelebrityByCategoryIdandTopicId(String categoryId,String topicId){
+        if (StringUtils.hasText(categoryId) && StringUtils.hasText(topicId)) {
+            return celebrityRepository.findByCategories_IdAndTopics_Id(categoryId, topicId);
+        }
+        
+        if (StringUtils.hasText(categoryId)) {
+            return celebrityRepository.findByCategories_Id(categoryId);
+        }
+        
+        if (StringUtils.hasText(topicId)) {
+            return celebrityRepository.findByTopics_Id(topicId);
+        }
+        
+        return celebrityRepository.findAll();
     }
 
     public List<Celebrity> getCelebritiesBySearch(String search) throws IOException{
+      if (! StringUtils.hasText(search)) {
+         return celebrityRepository.findAll();
+      }
       return celebrityRepository.findBySearchTerm(search.toLowerCase());
      
     }
@@ -95,7 +114,7 @@ public class CelebrityService {
       Pageable pageable = PageRequest.of(pageNo, pageSize);
 
       if (StringUtils.hasText(name)) {
-          name = name.toLowerCase(); // Ensure case insensitivity
+          name = name.toLowerCase(); 
           return celebrityRepository.findBySearchTermAndStatus(name, status, pageable);
       } 
       return celebrityRepository.findAllByStatus(status, pageable);
@@ -107,5 +126,13 @@ public class CelebrityService {
       sb.append(arg);
     }
     return sb.toString();
+  }
+
+  public List<Celebrity> getCelebrityByCategoryAndTopicList(String categoryId, List<String> topicId) {
+    if (StringUtils.hasText(categoryId) && topicId != null && !topicId.isEmpty()) {
+      return celebrityRepository.findByCategories_IdAndTopics_IdIn(categoryId, topicId);
+    } else {
+      return new ArrayList<>();
+    }
   }
 }

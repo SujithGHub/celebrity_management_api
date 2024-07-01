@@ -27,7 +27,7 @@ public class Users extends BaseModel implements UserDetails {
 
   @Override
   public List<GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority("USER_ROLE"));
+    return List.of(new SimpleGrantedAuthority(role.getName()));
   }
 
   @Override

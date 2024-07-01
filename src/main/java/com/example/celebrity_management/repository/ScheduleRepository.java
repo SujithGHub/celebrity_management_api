@@ -12,4 +12,6 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String> {
   // e.id=s.enquiryDetails inner join Celebrity c on c.id=e.celebrity where
   // c.id=:id")
   List<Schedule> findByEnquiryDetails_Celebrity_Id(String id);
+
+  Schedule findByEnquiryDetails_Id(String id);
 }

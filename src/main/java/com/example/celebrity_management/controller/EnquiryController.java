@@ -35,11 +35,15 @@ public class EnquiryController {
     return enquiryService.statusChange(schedule);
   }
 
+  @GetMapping("/get-date-enquiry")
+  public SuccessResponse getAllWithinWeekEnquiryDetails() {
+    return new SuccessResponse("", enquiryService.getEnquiriesWithinCurrentWeek());
+  }
+
   @GetMapping("/get-all-enquiry")
   public SuccessResponse getAllEnquiryDetails() {
     return new SuccessResponse("", enquiryService.getAll());
   }
-
   @GetMapping("{id}")
   public Optional<EnquiryDetail> getAllEnquiryById(
       @PathVariable("id") String id) {

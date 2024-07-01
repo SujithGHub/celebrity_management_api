@@ -17,8 +17,6 @@ public interface CelebrityRepository extends JpaRepository<Celebrity, String> {
 
   Celebrity findByMailIdAndPhoneNumber(String mailId, String phoneNumber);
 
-    @Query("SELECT c FROM Celebrity c JOIN c.categories cat WHERE cat.id = :categoryId")
-    List<Celebrity> findByCategoryId(@Param("categoryId") String categoryId);
     @Query("SELECT DISTINCT c FROM Celebrity c JOIN c.categories cat " +
     "WHERE (:searchTerm IS NULL OR (:searchTerm IS NOT NULL " +
     "AND (LOWER(c.name) LIKE %:searchTerm% OR LOWER(cat.name) LIKE %:searchTerm%)))")
@@ -29,8 +27,17 @@ public interface CelebrityRepository extends JpaRepository<Celebrity, String> {
     @Query(value = "SELECT DISTINCT c FROM Celebrity c JOIN c.categories cat " +
     "WHERE LOWER(c.name) LIKE %:searchTerm% OR LOWER(cat.name) LIKE %:searchTerm% " +
     "AND c.status = :status")
-Page<Celebrity> findBySearchTermAndStatus(@Param("searchTerm") String searchTerm, 
-                                          @Param("status") Types.Status status, 
-                                          Pageable pageable);
+    Page<Celebrity> findBySearchTermAndStatus(@Param("searchTerm") String searchTerm, 
+                                              @Param("status") Types.Status status, 
+                                              Pageable pageable);
 
+
+      List<Celebrity> findByCategories_IdAndTopics_Id(String categoryId, String topicId);
+      List<Celebrity> findByCategories_Id(String categoryId);
+      List<Celebrity> findByTopics_Id(String topicId);
+
+      @Query("SELECT c FROM Celebrity c JOIN c.categories cat JOIN c.topics t WHERE cat.id = :categoryId AND t.id IN :topicIds")
+      List<Celebrity> findByCategories_IdAndTopics_IdIn(@Param("categoryId") String categoryId, @Param("topicIds") List<String> topicIds);
+
+  
 }
