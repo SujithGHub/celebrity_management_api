@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.example.celebrity_management.Exception.InvalidDataException;
+import com.example.celebrity_management.model.BlockDates;
 import com.example.celebrity_management.model.Schedule;
+import com.example.celebrity_management.repository.BlockDatesRepo;
 import com.example.celebrity_management.repository.ScheduleRepository;
 import com.example.celebrity_management.util.Types.EventStatus;
 
@@ -32,23 +34,45 @@ public class ScheduleService {
   @Autowired
   private Configuration freemarkerConfig;
 
+  @Autowired
+  private BlockDatesRepo blockDatesRepo;
+
   
   public Schedule create(Schedule schedule) throws Exception {
 
-    List<Schedule> enq = scheduleRepository
-        .findByEnquiryDetails_Celebrity_Id(schedule.getEnquiryDetails().getCelebrity().getId());
-        
-    int count = 0;
-    for (Schedule e : enq) {
-      if (!(schedule.getEnquiryDetails().getStartTime().before(e.getEnquiryDetails().getStartTime())
-          && schedule.getEnquiryDetails().getEndTime().before(e.getEnquiryDetails().getEndTime())
-          ||
-          schedule.getEnquiryDetails().getStartTime().after(e.getEnquiryDetails().getStartTime())
-              && schedule.getEnquiryDetails().getEndTime().after(e.getEnquiryDetails().getEndTime()))) {
-        count++;
-      }
-    }
-    if (count == 0) {
+    
+  
+  Long scheduleOverLapCount=scheduleRepository.countNonOverlappingSchedules(schedule.getEnquiryDetails().getCelebrity().getId(), schedule.getEnquiryDetails().getStartTime(),schedule.getEnquiryDetails().getEndTime());
+  //To Check blockdates count for loop method
+  // List<Schedule> enq = scheduleRepository
+  //       .findByEnquiryDetails_Celebrity_Id(schedule.getEnquiryDetails().getCelebrity().getId());
+  // int count = 0;
+  //   for (Schedule e : enq) {
+  //     if (!(schedule.getEnquiryDetails().getStartTime().before(e.getEnquiryDetails().getStartTime())
+  //         && schedule.getEnquiryDetails().getEndTime().before(e.getEnquiryDetails().getEndTime())
+  //         ||
+  //         schedule.getEnquiryDetails().getStartTime().after(e.getEnquiryDetails().getStartTime())
+  //             && schedule.getEnquiryDetails().getEndTime().after(e.getEnquiryDetails().getEndTime()))) {
+  //       count++;
+  //     }
+  //   }
+Long blockedDatesCount=blockDatesRepo.findByBlockDateCount(schedule.getEnquiryDetails().getCelebrity().getId(),schedule.getEnquiryDetails().getStartTime(),schedule.getEnquiryDetails().getEndTime());
+
+// To Check blockdates count for loop method
+// List<BlockDates> blackDates=blockDatesRepo.findByCelebrityId(schedule.getEnquiryDetails().getCelebrity().getId());
+// int bloackCo = 0;
+// for (BlockDates e : blackDates) {
+//   if (!(schedule.getEnquiryDetails().getStartTime().before(e.getBlockedDate()))
+//       && schedule.getEnquiryDetails().getEndTime().before(e.getBlockedDate())
+//       ||
+//       schedule.getEnquiryDetails().getStartTime().after(e.getBlockedDate())
+//           && schedule.getEnquiryDetails().getEndTime().after(e.getBlockedDate())) {
+//             bloackCo++;
+//   }
+// }
+
+
+    if (scheduleOverLapCount == 0 && blockedDatesCount == 0 ) {
       //to Client
       CompletableFuture.runAsync(() -> {
 
@@ -63,7 +87,7 @@ public class ScheduleService {
 
       return scheduleRepository.save(schedule);
     } else {
-      throw new InvalidDataException("Another schedule available on this Date/Time");
+      throw new InvalidDataException(scheduleOverLapCount != 0 ? "Another schedule available on this Date/Time":"This Date is Blocked");
     }
   }
 
