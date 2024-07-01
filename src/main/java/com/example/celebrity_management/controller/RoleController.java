@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +32,11 @@ public class RoleController {
     return roleService.name(id);
   }
 
+  @GetMapping("/get-all")
+  public List<Role> getAllRoles() {
+      return roleService.getAllRoles();
+  }
+  
   @DeleteMapping(value = "/{delete-name}")
   public Optional<Role> deleteRole(@PathVariable("name") String name) {
     return roleService.delete(name);

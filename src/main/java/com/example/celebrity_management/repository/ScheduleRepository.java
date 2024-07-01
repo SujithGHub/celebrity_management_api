@@ -27,4 +27,5 @@ Long countNonOverlappingSchedules(@Param("celebrityId") String celebrityId,
                                   @Param("endTime") Date endTime);
 
 
+  Schedule findByEnquiryDetails_Id(String id);
 }

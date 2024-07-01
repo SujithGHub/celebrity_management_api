@@ -14,4 +14,9 @@ public class Types {
     AVAILABLE, NOT_AVAILABLE
   }
 
+
+  public enum PrefixType {
+    ENQUIRY,SCHEDULE
+  }
+
 }

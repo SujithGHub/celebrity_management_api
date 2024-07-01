@@ -3,6 +3,7 @@ package com.example.celebrity_management.service;
 import com.example.celebrity_management.model.Role;
 import com.example.celebrity_management.repository.RoleRepository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class RoleService {
     return roleRepository.findById(id);
   }
 
+  public List<Role> getAllRoles(){
+    return roleRepository.findAll();
+  }
+  
   public Optional<Role> delete(String name) {
     return roleRepository.deleteByName(name);
 
